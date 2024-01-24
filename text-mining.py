@@ -10,7 +10,7 @@ for url in list_of_urls:
     response = requests.get(url)
     if response.status_code == 200:
         soup = BeautifulSoup(response.content, 'html.parser')
-        job_titles = soup.select('h2')
+        job_titles = soup.find_all(attrs={"data-e2e-component": "job-ad-list-item"})
         
         for title in job_titles:
             job_title = title.text.strip()
@@ -22,3 +22,4 @@ for url in list_of_urls:
 
 for title in scraped_data:
     print(title)
+
