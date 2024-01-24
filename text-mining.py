@@ -12,7 +12,9 @@ for url in list_of_urls:
         job_titles = soup.find_all(attrs={"data-e2e-component": "job-ad-list-item"})
         
         for title in job_titles:
-            scraped_data.append(title.text.strip())
+            job_title = title.text.strip()
+            job_title = job_title.split(",", 1)[0]
+            scraped_data.append(job_title)
 
 for title in scraped_data:
     print(title)
