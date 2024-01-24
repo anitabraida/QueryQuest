@@ -13,7 +13,10 @@ for url in list_of_urls:
         job_titles = soup.select('h2')
         
         for title in job_titles:
-            scraped_data.append(title.text.strip())  # Extract text content and strip any leading/trailing whitespaces
+            job_title = title.text.strip()
+            job_title = job_title.split(",", 1)[0]
+            scraped_data.append(job_title)  # Extract text content and strip any leading/trailing whitespaces
+
 
         ## Add To Data Output
 
