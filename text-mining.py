@@ -1,26 +1,21 @@
 from bs4 import BeautifulSoup
 import requests
 
-list_of_urls = [
-    'https://tyopaikat.oikotie.fi/tyopaikat/helsinki',
-        ]
+list_of_urls = ['https://tyopaikat.oikotie.fi/tyopaikat/helsinki']
 
 scraped_data = []
 
-## Scraping Function
-def start_scrape():
-    
-    ## Loop Through List of URLs
-    for url in list_of_urls:
+for url in list_of_urls:
+    ## Send Request
+    response = requests.get(url)
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.content, 'html.parser')
+        job_titles = soup.select('h2')
         
-        ## Send Request
-        response = requests.get(url)
-        
-        if response.status_code == 200:
-            
-            ## Parse Data
-            print(response.text)
+        for title in job_titles:
+            scraped_data.append(title.text.strip())  # Extract text content and strip any leading/trailing whitespaces
 
-            ## Add To Data Output
-        
-        pass
+        ## Add To Data Output
+
+for title in scraped_data:
+    print(title)
