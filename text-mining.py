@@ -19,3 +19,4 @@ for url in list_of_urls:
 
 for title in scraped_data:
     print(title)
+
