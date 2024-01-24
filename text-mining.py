@@ -12,7 +12,6 @@ for url in list_of_urls:
         job_titles = soup.find_all(attrs={"data-e2e-component": "job-ad-list-item"})
         
         for title in job_titles:
-<<<<<<< HEAD
             scraped_data.append(title.text.strip())
 =======
             job_title = title.text.strip()
