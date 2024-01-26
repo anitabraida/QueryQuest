@@ -24,7 +24,7 @@ td_matrix = dense_matrix.T
 t2i = cv.vocabulary_ 
 
 while True:
-    query = input("Please enter your query here: ")
+    query = input("Please enter your query here or hit enter to break: ")
     if query == " ":    
         break    
     print(query)
