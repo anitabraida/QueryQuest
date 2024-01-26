@@ -12,12 +12,11 @@ def rewrite_query(query): # rewrite every token in the query
     return " ".join(rewrite_token(t) for t in query.split())
 
  
-    
+with open('enwiki-20181001-corpus.100-articles.txt', 'r') as file:
+    texts = file.read()
 
-documents = ["This is a silly example",
-             "A better example",
-             "Nothing to see here",
-             "This is a great and long example"]
+documents = texts.split('</article>')
+
 cv = CountVectorizer(lowercase=True, binary=True)
 sparse_matrix = cv.fit_transform(documents)
 dense_matrix = sparse_matrix.todense()
@@ -38,12 +37,3 @@ while True:
     for i, doc_idx in enumerate(hits_list):
         print("Matching doc #{:d}: {:s}".format(i, documents[doc_idx]))
 
-    
-
-
-
-
-with open('enwiki-20181001-corpus.100-articles.txt', 'r') as file:
-    texts = file.read()
-
-documents = texts.split('</article>')
