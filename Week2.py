@@ -25,9 +25,9 @@ t2i = cv.vocabulary_
 
 while True:
     query = input("Please enter your query here or hit enter to break: ")
-    if query == " ":    
+    if query == "":    
         break    
-    print(query)
+    
     try:
         hits_matrix = eval(rewrite_query(query))
     except KeyError as e:
@@ -35,7 +35,7 @@ while True:
         continue    
     hits_list = list(hits_matrix.nonzero()[1])
     for i, doc_idx in enumerate(hits_list):
-        print("Matching doc #{:d}: {:s}".format(i, documents[doc_idx]))
+        print("Matching doc #{:d}: {:s}...".format(i, documents[doc_idx][:100]))
         if i > 5:
             break
 
