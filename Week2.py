@@ -36,4 +36,6 @@ while True:
     hits_list = list(hits_matrix.nonzero()[1])
     for i, doc_idx in enumerate(hits_list):
         print("Matching doc #{:d}: {:s}".format(i, documents[doc_idx]))
+        if i > 5:
+            break
 
