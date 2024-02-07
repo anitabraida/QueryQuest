@@ -14,24 +14,29 @@ with open('enwiki-20181001-corpus.100-articles.txt', 'r') as file:
 
 documents = texts.split('</article>')
 
-# Initialize TF-IDF Vectorizer
-tfidf_vectorizer = TfidfVectorizer(lowercase=True)
-
-# Fit and transform the documents
-tfidf_matrix = tfidf_vectorizer.fit_transform(documents)
-
-# Get the vocabulary and inverse vocabulary
-t2i = tfidf_vectorizer.vocabulary_
-i2t = {i: t for t, i in t2i.items()}
 
 while True:
     query = input("Please enter your query here or hit enter to break: ")
     if query == "":    
-        break    
+        break
     
-    query_vector = tfidf_vectorizer.transform([query])
+    querylen = len(query.split(" "))
+    
+    
+    tfidf_vectorizer = TfidfVectorizer(ngram_range=(querylen, querylen), lowercase=True)
 
-    # Compute cosine similarity between query and documents
+    
+    tfidf_matrix = tfidf_vectorizer.fit_transform(documents)
+
+    
+    t2i = tfidf_vectorizer.vocabulary_
+    i2t = {i: t for t, i in t2i.items()}
+
+    
+   
+    query_vector = tfidf_vectorizer.transform([query])
+    
+   
     cosine_similarities = cosine_similarity(query_vector, tfidf_matrix)
 
     # Sort the documents based on similarity
@@ -42,4 +47,3 @@ while True:
         print("Matching doc #{:d}: {:s}... (Cosine Similarity: {:.4f})".format(i, documents[doc_idx][:100], cosine_similarities[0][doc_idx]))
         if i >= 5:
             break
-            
