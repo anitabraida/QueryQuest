@@ -1,35 +1,29 @@
 from flask import Flask, render_template, request
-from text-mining import scrape_job_titles
+from text_mining import scrape_job_titles
 
-#Initialize Flask instance
 app = Flask(__name__)
 
+# URL to scrape job titles from
 list_of_urls = ['https://tyopaikat.oikotie.fi/tyopaikat/helsinki']
 
+# Scraping job titles from the specified URL
+data = []
 for url in list_of_urls:
-    data = job_titles = scrape_job_titles(url)
+    data.extend(scrape_job_titles(url))
 
 @app.route('/')
-def hello_world():
-   return "Hello, World!"
+def index():
+    return render_template('index.html', matches=[])
 
-#Function search() is associated with the address base URL + "/search"
 @app.route('/search')
 def search():
-
-    #Get query from URL variable
     query = request.args.get('query')
-
-    #Initialize list of matches
-    matches = []
-
-    #If query exists (i.e. is not None)
     if query:
-        #Look at each entry in the example data
-        for entry in data:
-            #If an entry name contains the query, add the entry to matches
-            if query.lower() in entry['name'].lower():
-                matches.append(entry)
-
-    #Render index.html with matches variable
+        # Filter job titles based on the query
+        matches = [title for title in data if query.lower() in title.lower()]
+    else:
+        matches = []
     return render_template('index.html', matches=matches)
+
+if __name__ == '__main__':
+    app.run(debug=True)
