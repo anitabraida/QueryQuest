@@ -1,22 +1,27 @@
 from bs4 import BeautifulSoup
 import requests
 
-list_of_urls = ['https://tyopaikat.oikotie.fi/tyopaikat/helsinki']
-
-scraped_data = []
-
-for url in list_of_urls:
+def scrape_job_titles(url):
     response = requests.get(url)
     if response.status_code == 200:
         soup = BeautifulSoup(response.content, 'html.parser')
         job_titles = soup.find_all(attrs={"data-e2e-component": "job-ad-list-item"})
         
-    for title in job_titles:
-        job_title = title.text.strip()
-        job_title = job_title.split(",", 1)[0]
-        scraped_data.append(job_title)    
+        scraped_data = []
+        for title in job_titles:
+            job_title = title.text.strip().split(",", 1)[0]
+            scraped_data.append(job_title)
+            
+        return scraped_data
+    else:
+        print("Failed to fetch data from URL:", url)
+        return []
 
-for title in scraped_data:
-    print(title)
+list_of_urls = ['https://tyopaikat.oikotie.fi/tyopaikat/helsinki']
+
+for url in list_of_urls:
+    job_titles = scrape_job_titles(url)
+    for title in job_titles:
+        print(title)
 
 print("What are these? These are job titles in Helsinki from oikotie.fi")

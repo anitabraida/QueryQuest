@@ -1,16 +1,13 @@
 from flask import Flask, render_template, request
+from text-mining import scrape_job_titles
 
 #Initialize Flask instance
 app = Flask(__name__)
 
-example_data = [
-    {'name': 'Cat sleeping on a bed', 'source': 'cat.jpg'},
-    {'name': 'Misty forest', 'source': 'forest.jpg'},
-    {'name': 'Bonfire burning', 'source': 'fire.jpg'},
-    {'name': 'Old library', 'source': 'library.jpg'},
-    {'name': 'Sliced orange', 'source': 'orange.jpg'}
-]
+list_of_urls = ['https://tyopaikat.oikotie.fi/tyopaikat/helsinki']
 
+for url in list_of_urls:
+    data = job_titles = scrape_job_titles(url)
 
 @app.route('/')
 def hello_world():
@@ -29,7 +26,7 @@ def search():
     #If query exists (i.e. is not None)
     if query:
         #Look at each entry in the example data
-        for entry in example_data:
+        for entry in data:
             #If an entry name contains the query, add the entry to matches
             if query.lower() in entry['name'].lower():
                 matches.append(entry)
