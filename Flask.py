@@ -11,9 +11,11 @@ data = []
 for url in list_of_urls:
     data.extend(scrape_job_titles(url))
 
+
 @app.route('/')
 def index():
     return render_template('index.html', matches=[])
+
 
 @app.route('/search')
 def search():
@@ -24,6 +26,7 @@ def search():
     else:
         matches = []
     return render_template('index.html', matches=matches)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
