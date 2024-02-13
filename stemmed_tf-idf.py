@@ -3,6 +3,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import nltk
 from nltk.stem import PorterStemmer
+from text_mining import scrape_job_titles
 
 
 def rewrite_token(t):
@@ -14,12 +15,17 @@ def rewrite_query(query):
     stemmed_tokens = [stemmer.stem(token) for token in tokens]
     return " ".join(rewrite_token(t) for t in stemmed_tokens)
 
-with open('enwiki-20181001-corpus.100-articles.txt', 'r') as file:
-    texts = file.read()
+# URL to scrape job titles from
+list_of_urls = ['https://tyopaikat.oikotie.fi/tyopaikat/helsinki']
+
+# Scraping job titles from the specified URL
+data = []
+for url in list_of_urls:
+    data.extend(scrape_job_titles(url))
 
 stemmer = PorterStemmer()
 
-documents = texts.split('</article>')
+documents = data
 stemmed_documents = []
 for document in documents:
     tokens = nltk.word_tokenize(document)
@@ -45,6 +51,7 @@ while True:
 
     # Rewrite the query with stemming
     rewritten_query = rewrite_query(query)
+    print(rewritten_query)
     
     query_vector = tfidf_vectorizer.transform([rewritten_query])
 
@@ -56,6 +63,6 @@ while True:
 
     # Print the top matching documents
     for i, doc_idx in enumerate(sorted_indices):
-        print("Matching doc #{:d}: {:s}... (Cosine Similarity: {:.4f})".format(i, documents[doc_idx][:100], cosine_similarities[0][doc_idx]))
+        print("Matching doc #{:d}: {} (Cosine Similarity: {:.4f})".format(i, documents[doc_idx], cosine_similarities[0][doc_idx]))
         if i >= 5:
             break
