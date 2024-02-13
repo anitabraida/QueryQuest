@@ -3,6 +3,14 @@
 <head>
     <meta charset="utf-8">
     <title>Job Search</title>
+    <style>
+        /* Style the anchor tag to make it look like regular text */
+        a {
+            text-decoration: none; /* Remove underline */
+            color: inherit; /* Inherit color from parent */
+            cursor: pointer; /* Change cursor to pointer on hover */
+        }
+    </style>
 </head>
 <body>
     <h1>Job Search</h1>
@@ -11,9 +19,9 @@
         <input type="submit" value="Search">
     </form>
     <ul>
-        <!--Go through each job title in the "matches" variable sent from the Flask app-->
-        {% for title in matches %}
-            <li>{{ title }}</li>
+        <!-- Go through each job title and link in the "titles_and_links" variable sent from the Flask app -->
+        {% for title, link in matches %}
+            <li><a href="{{ link }}">{{ title }}</a></li>
         {% endfor %}
     </ul>
 </body>
