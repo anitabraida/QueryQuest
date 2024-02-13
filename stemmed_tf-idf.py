@@ -3,7 +3,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import nltk
 from nltk.stem import PorterStemmer
-from text_mining import scrape_job_titles
+from text_mining import scrape_websites
 
 
 def rewrite_token(t):
@@ -15,17 +15,12 @@ def rewrite_query(query):
     stemmed_tokens = [stemmer.stem(token) for token in tokens]
     return " ".join(rewrite_token(t) for t in stemmed_tokens)
 
-# URL to scrape job titles from
-list_of_urls = ['https://tyopaikat.oikotie.fi/tyopaikat/helsinki']
-
-# Scraping job titles from the specified URL
-data = []
-for url in list_of_urls:
-    data.extend(scrape_job_titles(url))
-
 stemmer = PorterStemmer()
 
-documents = data
+# Scrape job titles
+scraped_data = scrape_websites()
+documents = [data['title'] for data in scraped_data]
+
 stemmed_documents = []
 for document in documents:
     tokens = nltk.word_tokenize(document)

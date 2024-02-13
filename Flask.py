@@ -6,10 +6,8 @@ app = Flask(__name__)
 # URL to scrape job titles from
 list_of_urls = ['https://tyopaikat.oikotie.fi/tyopaikat/helsinki']
 
-# Scraping job titles from the specified URL
-data = []
-for url in list_of_urls:
-    data.extend(scrape_job_titles(url))
+# Scraping job listings
+data = 
 
 
 @app.route('/')
