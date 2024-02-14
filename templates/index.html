@@ -7,16 +7,16 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='styles.css')}}">
 </head>
 
-<body class="text-style p-8 overflow-hidden max-w-2xl mx-auto mt-50 center">
-    <h1 class="heading">Job Search</h1>
-    <form action="/search" method="get">
+<body class="text-style p-8 overflow-hidden max-w-2xl mx-auto mt-50">
+    <h1 class="heading center">Job Search</h1>
+    <form class="center" action="/search" method="get">
         <input class="form-w form-border" type="text" name="query" autofocus>
         <input type="submit" value="Search">
     </form>
     <ul>
         <!-- Go through each job title and link in the "titles_and_links" variable sent from the Flask app -->
         {% for title, link in matches %}
-        <li><a href="{{ link }}">{{ title }}</a></li>
+        <li><a class="overflow" href="{{ link }}">{{ title }}</a></li>
         {% endfor %}
     </ul>
 </body>
