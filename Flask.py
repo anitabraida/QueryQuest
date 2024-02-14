@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 from text_mining import scrape_job_titles
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path="", static_folder="static")
 
 # URL to scrape job titles from
 list_of_urls = ['https://tyopaikat.oikotie.fi/tyopaikat/helsinki']
