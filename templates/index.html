@@ -14,9 +14,9 @@
         <input type="submit" value="Search">
     </form>
     <ul>
-        <!--Go through each job title in the "matches" variable sent from the Flask app-->
-        {% for title in matches %}
-        <li>{{ title }}</li>
+        <!-- Go through each job title and link in the "titles_and_links" variable sent from the Flask app -->
+        {% for title, link in matches %}
+        <li><a href="{{ link }}">{{ title }}</a></li>
         {% endfor %}
     </ul>
 </body>
