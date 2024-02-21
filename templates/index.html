@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='styles.css')}}">
 </head>
 
-<body class="text-style p-8 overflow-hidden max-w-2xl mx-auto mt-50">
+<body class="text-style p-8 max-w-2xl mx-auto mt-50">
     <h1 class="heading center">Job Search</h1>
     <form class="center" action="/search" method="get">
         <input class="form-w form-border" type="text" name="query" autofocus>
@@ -19,6 +19,16 @@
         <li><a class="overflow" href="{{ link }}">{{ title }}</a></li>
         {% endfor %}
     </ul>
+    {% if query|length > 0 and matches|length == 0 %}
+    <p>No matches were found.</p>
+    {% endif %}
+
+    {% if query|length > 0 and matches|length > 0 %}
+    <div style="align:left;font-face:verdana;color:gray;">
+        <p><i>Keyphrase frequecy distribution</i></p>
+        <img src="./static/query_{{ query }}_plot.png">
+    </div>
+    {% endif %}
 </body>
 
 </html>
