@@ -11,6 +11,7 @@ import json
 # clear the static folder of any remaining plots
 os.system("rm -f static/*.png")
 
+# redoing commit
 
 app = Flask(__name__)
 
