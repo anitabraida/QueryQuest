@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request
-from text_mining import scrape_websites
 from tfidf_search import tf_idf
 import matplotlib as mlp
 import pke
@@ -7,7 +6,7 @@ import os
 from matplotlib import pyplot as plt
 from collections import defaultdict
 import nltk
-
+import json
 
 # clear the static folder of any remaining plots
 os.system("rm -f static/*.png")
@@ -15,8 +14,19 @@ os.system("rm -f static/*.png")
 
 app = Flask(__name__)
 
-# Scraping job listings
-scraped_data = scrape_websites()
+file = "data.json"
+scraped_data = []
+
+with open(file, "r") as f:
+    json_data = json.load(f)
+
+    for job_data in json_data:
+        job_dict = {
+            "title": job_data.get("title", ""),
+            "description": job_data.get("description", ""),
+            "link": job_data.get("link", ""),
+        }
+        scraped_data.append(job_dict)
 
 mlp.use("Agg")
 
