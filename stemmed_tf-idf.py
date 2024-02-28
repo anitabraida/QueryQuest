@@ -10,16 +10,18 @@ def rewrite_token(t):
     stemmed_token = stemmer.stem(t)
     return stemmed_token
 
+
 def rewrite_query(query):
     tokens = nltk.word_tokenize(query)
     stemmed_tokens = [stemmer.stem(token) for token in tokens]
     return " ".join(rewrite_token(t) for t in stemmed_tokens)
 
+
 stemmer = PorterStemmer()
 
 # Scrape job titles
 scraped_data = scrape_websites()
-documents = [data['title'] for data in scraped_data]
+documents = [data["title"] for data in scraped_data]
 
 stemmed_documents = []
 for document in documents:
@@ -41,13 +43,13 @@ while True:
     stemmed_terms = []
 
     query = input("Please enter your query here or hit enter to break: ")
-    if query == "":    
-        break    
+    if query == "":
+        break
 
     # Rewrite the query with stemming
     rewritten_query = rewrite_query(query)
     print(rewritten_query)
-    
+
     query_vector = tfidf_vectorizer.transform([rewritten_query])
 
     # Compute cosine similarity between query and documents
@@ -58,6 +60,10 @@ while True:
 
     # Print the top matching documents
     for i, doc_idx in enumerate(sorted_indices):
-        print("Matching doc #{:d}: {} (Cosine Similarity: {:.4f})".format(i, documents[doc_idx], cosine_similarities[0][doc_idx]))
+        print(
+            "Matching doc #{:d}: {} (Cosine Similarity: {:.4f})".format(
+                i, documents[doc_idx], cosine_similarities[0][doc_idx]
+            )
+        )
         if i >= 5:
             break
