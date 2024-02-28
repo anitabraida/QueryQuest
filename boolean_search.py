@@ -8,25 +8,38 @@ def boolean_search(file_path):
          "(": "(", ")": ")"}          # operator replacements
 
     def rewrite_token(t):
-        return d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t))
+        if t in t2i_title:
+            return d.get(t, 'td_matrix_title[t2i_title["{:s}"]]'.format(t))
+        elif t in t2i_description:
+            return d.get(t, 'td_matrix_description[t2i_description["{:s}"]]'.format(t))
+        else:
+            return d.get(t, None)
 
     def rewrite_query(query): # rewrite every token in the query
         return " ".join(rewrite_token(t) for t in query.split())
 
     with open(file_path, 'r', encoding='utf-8') as file:
         scraped_data = json.load(file)
+   
 
     titles = [data['title'] for data in scraped_data]
+    links = [data['link'] for data in scraped_data]
     descriptions = [data['description'] for data in scraped_data]
 
     cv_title = CountVectorizer(lowercase=True, binary=True)
     cv_description = CountVectorizer(lowercase=True, binary=True)
-    sparse_matrix_title = cv.fit_transform(title)
-    sparse_matrix_description = cv.fit_transform(description)
+
+    sparse_matrix_title = cv_title.fit_transform(titles)
+    sparse_matrix_description = cv_description.fit_transform(descriptions)
+
     dense_matrix_title = sparse_matrix_title.todense()
     dense_matrix_description = sparse_matrix_description.todense()
-    td_matrix = dense_matrix.T
-    t2i = cv.vocabulary_ 
+
+    td_matrix_description = dense_matrix_description.T
+    td_matrix_title = dense_matrix_title.T
+
+    t2i_title = cv_title.vocabulary_ 
+    t2i_description = cv_description.vocabulary_
 
     while True:
         query = input("Please enter your query here or hit enter to break: ")
@@ -40,8 +53,11 @@ def boolean_search(file_path):
             continue    
         hits_list = list(hits_matrix.nonzero()[1])
         for i, doc_idx in enumerate(hits_list):
-            print("Matching doc #{:d}: {:s}".format(i, documents[doc_idx]))
+            print("Matching doc #{:d}: Title: {:s}, Link: {:s}, Description: {:.100s}..."
+            .format(i, titles[doc_idx],
+            links[doc_idx],
+            descriptions[doc_idx]))
             if i > 5:
                 break
 
-boolean_search('data copy.json')
+boolean_search('data.json')
