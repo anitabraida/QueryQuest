@@ -13,10 +13,14 @@ def boolean_search(file_path):
         elif t in t2i_description:
             return d.get(t, 'td_matrix_description[t2i_description["{:s}"]]'.format(t))
         else:
-            return d.get(t, None)
+            return ""
 
     def rewrite_query(query): # rewrite every token in the query
-        return " ".join(rewrite_token(t) for t in query.split())
+        try:
+            return " ".join(rewrite_token(t) for t in query.split())
+        except TypeError as e:
+            print(f"An error occurred: {e}")
+            return ""  # or any other default value you prefer
 
     with open(file_path, 'r', encoding='utf-8') as file:
         scraped_data = json.load(file)
@@ -48,15 +52,12 @@ def boolean_search(file_path):
 
         try:
             hits_matrix = eval(rewrite_query(query))
-        except KeyError as e:
-            print(f"Unknown term: {e}")
+        except Exception as e:
+            print(f"Unknown term: {query}")
             continue    
         hits_list = list(hits_matrix.nonzero()[1])
         for i, doc_idx in enumerate(hits_list):
-            print("Matching doc #{:d}: Title: {:s}, Link: {:s}, Description: {:.100s}..."
-            .format(i, titles[doc_idx],
-            links[doc_idx],
-            descriptions[doc_idx]))
+            print("Matching doc #{:d}: Title: {:s}, Link: {:s}, Description: {:.100s}...".format(i, titles[doc_idx], links[doc_idx], descriptions[doc_idx]))
             if i > 5:
                 break
 
