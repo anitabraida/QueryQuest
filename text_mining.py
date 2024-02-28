@@ -82,6 +82,6 @@ def scrape_websites():
     data.extend(scrape_duunitori('https://duunitori.fi/tyopaikat/alue/helsinki'))
 
     with open('data.json', 'w', encoding='utf-8') as file:
-        json.dump(data, file, ensure_ascii=False)
+        json.dump(data, file, ensure_ascii=False, indent=2)
 
 scrape_websites()
