@@ -23,7 +23,7 @@ def tf_idf(query, scraped_data):
     stemmer = PorterStemmer()
 
     #scraped_data = scrape_websites()
-    documents = [data['title'] for data in scraped_data]
+    documents = [(data['title'], data['description']) for data in scraped_data]
 
     stemmed_documents = []
     for document in documents:

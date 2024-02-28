@@ -1,10 +1,11 @@
 from bs4 import BeautifulSoup
 import requests
+import json
 
 def scrape_oikotie(url):
     i = 0
     scraped_data = []
-    while i < 50:
+    while i < 5:
         if i == 0:
             URL = url
         else:
@@ -42,7 +43,7 @@ def scrape_oikotie(url):
 def scrape_duunitori(url):
     i = 0
     scraped_data = []
-    while i < 50:
+    while i < 5:
         if i == 0:
             URL = url
         else:
@@ -79,14 +80,8 @@ def scrape_websites():
     data = []
     data.extend(scrape_oikotie('https://tyopaikat.oikotie.fi/tyopaikat/helsinki'))
     data.extend(scrape_duunitori('https://duunitori.fi/tyopaikat/alue/helsinki'))
-    for job in data[:10]:
-        print("Title:",job['title'])
-        print("Description:", job['description'][:100],"...")
-        print("Link:", job['link'])
-        print()
 
-    return data
+    with open('data.json', 'w', encoding='utf-8') as file:
+        json.dump(data, file, ensure_ascii=False)
 
 scrape_websites()
-
-# The first line of description is not present on the actual website, do we want to keep it?
