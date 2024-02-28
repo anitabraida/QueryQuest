@@ -56,9 +56,17 @@ def boolean_search(file_path):
             print(f"Unknown term: {query}")
             continue    
         hits_list = list(hits_matrix.nonzero()[1])
+        matches = []
         for i, doc_idx in enumerate(hits_list):
+            match = {
+            'title': titles[doc_idx],
+            'link': links[doc_idx],
+            'description': descriptions[doc_idx]
+            }
+            matches.append(match)
             print("Matching doc #{:d}: Title: {:s}, Link: {:s}, Description: {:.100s}...".format(i, titles[doc_idx], links[doc_idx], descriptions[doc_idx]))
             if i > 5:
                 break
+        return matches
 
 boolean_search('data.json')
