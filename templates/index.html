@@ -19,6 +19,7 @@
         </div>
     </form>
     <input type="hidden" id="searchMethod" name="method" value="tf-idf">
+
     <div>
         <ul>
             <!-- Go through each job title and link in the "titles_and_links" variable sent from the Flask app -->
@@ -30,10 +31,12 @@
         <p>No matches were found.</p>
         {% endif %}
     </div>
+    {% if show_plot %}
     <div style="align:left;font-face:verdana;color:gray;">
         <p><i>Trending jobtitles</i></p>
         <img style="height: 500px;width: 450px;" src="./static/trending_plot.png">
     </div>
+    {% endif %}
 
     <script>
         document.getElementById("toggleTF-IDFButton").addEventListener("click", function () {
