@@ -1,7 +1,14 @@
 import json
 from sklearn.feature_extraction.text import CountVectorizer
 
-def boolean_search(file_path):
+with open('data.json', 'r', encoding='utf-8') as file:
+        scraped_data = json.load(file)
+
+query = input("Please enter your query here or hit enter to break: ")
+    if query == "":    
+        break         
+
+def boolean_search(scraped_data, query):
     d = {"and": "&", "AND": "&",
          "or": "|", "OR": "|",
          "not": "1 -", "NOT": "1 -",
@@ -21,9 +28,6 @@ def boolean_search(file_path):
         except TypeError as e:
             print(f"An error occurred: {e}")
             return ""  # or any other default value you prefer
-
-    with open(file_path, 'r', encoding='utf-8') as file:
-        scraped_data = json.load(file)
    
 
     titles = [data['title'] for data in scraped_data]
@@ -45,28 +49,21 @@ def boolean_search(file_path):
     t2i_title = cv_title.vocabulary_ 
     t2i_description = cv_description.vocabulary_
 
-    while True:
-        query = input("Please enter your query here or hit enter to break: ")
-        if query == "":    
-            break    
-
-        try:
-            hits_matrix = eval(rewrite_query(query))
-        except Exception as e:
-            print(f"Unknown term: {query}")
-            continue    
-        hits_list = list(hits_matrix.nonzero()[1])
-        matches = []
-        for i, doc_idx in enumerate(hits_list):
-            match = {
+    try:
+        hits_matrix = eval(rewrite_query(query))
+    except Exception as e:
+        print(f"Unknown term: {query}")
+        continue    
+    hits_list = list(hits_matrix.nonzero()[1])
+    matches = []
+    for i, doc_idx in enumerate(hits_list):
+         match = {
             'title': titles[doc_idx],
             'link': links[doc_idx],
             'description': descriptions[doc_idx]
-            }
-            matches.append(match)
-            print("Matching doc #{:d}: Title: {:s}, Link: {:s}, Description: {:.100s}...".format(i, titles[doc_idx], links[doc_idx], descriptions[doc_idx]))
-            if i > 5:
-                break
-        return matches
-
-boolean_search('data.json')
+                }
+        matches.append(match)
+        print("Matching doc #{:d}: Title: {:s}, Link: {:s}, Description: {:.100s}...".format(i, titles[doc_idx], links[doc_idx], descriptions[doc_idx]))
+        if i > 5:
+            break
+    return matches
