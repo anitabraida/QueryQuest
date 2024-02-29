@@ -2,10 +2,10 @@ import json
 from sklearn.feature_extraction.text import CountVectorizer
 
 #with open('data.json', 'r', encoding='utf-8') as file:
- #   scraped_data = json.load(file)
+#    scraped_data = json.load(file)
 
-#query = input("Please enter your query here or hit enter to break: ")  
-
+#query = input("Please enter your query here or hit enter to break: ")
+     
 def boolean_search(scraped_data, query):
     d = {"and": "&", "AND": "&",
          "or": "|", "OR": "|",
@@ -47,24 +47,28 @@ def boolean_search(scraped_data, query):
     t2i_title = cv_title.vocabulary_ 
     t2i_description = cv_description.vocabulary_
 
-    try:
-        hits_matrix = eval(rewrite_query(query))
-    except Exception as e:
-        print(f"Unknown term: {query}")
-    if hits_matrix is None:
-        print("Query did not produce any results.")
-        return []
+    while True:
+        query = query
+        if query == "":    
+            break    
 
-    hits_list = list(hits_matrix.nonzero()[1])
-    matches = []
-    for i, doc_idx in enumerate(hits_list):
-        match = {
+        try:
+            hits_matrix = eval(rewrite_query(query))
+        except Exception as e:
+            print(f"Unknown term: {query}")
+            continue    
+        hits_list = list(hits_matrix.nonzero()[1])
+        matches = []
+        for i, doc_idx in enumerate(hits_list):
+            match = {
             'title': titles[doc_idx],
             'link': links[doc_idx],
             'description': descriptions[doc_idx]
-                }
-        matches.append(match)
-        print("Matching doc #{:d}: Title: {:s}, Link: {:s}, Description: {:.100s}...".format(i, titles[doc_idx], links[doc_idx], descriptions[doc_idx]))
-        if i > 5:
-            break
-    return matches
+            }
+            matches.append(match)
+           # print("Matching doc #{:d}: Title: {:s}, Link: {:s}, Description: {:.100s}...".format(i, titles[doc_idx], links[doc_idx], descriptions[doc_idx]))
+            if i > 5:
+                break
+        return matches
+
+#boolean_search(scraped_data, query) 
