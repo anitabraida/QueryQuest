@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from tfidf_search import tf_idf
+from tfidf_search import tf_idf_return, get_matches
 import matplotlib as mlp
 import pke
 import os
@@ -64,6 +64,7 @@ def index():
     generate_trending_plot()
     return render_template("index.html", matches=[], show_plot=True)
 
+tfidf_matrix, tfidf_vectorizer = tf_idf_return()
 
 @app.route("/search")
 def search():
@@ -76,10 +77,11 @@ def search():
         if search_method == "boolean":
             matches = boolean_search(query=query, scraped_data=scraped_data)
         else:
-            matches = tf_idf(query=query, scraped_data=scraped_data)
-        return render_template(
-            "index.html", query=query.lower(), matches=matches, show_plot=False
-        )
+            query_vector = tfidf_vectorizer.transform([query])
+            matches = get_matches(tfidf_matrix=tfidf_matrix, tfidf_vector=query_vector, scraped_data=scraped_data)
+
+    return render_template("index.html", query=query.lower(), matches=matches, show_plot=False)
+
 
 
 if __name__ == "__main__":
