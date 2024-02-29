@@ -6,6 +6,7 @@ from matplotlib import pyplot as plt
 import json
 from boolean_search import boolean_search
 import matplotlib.ticker as ticker
+from fuzzy_search import fuzzy_search
 
 # clear the static folder of any remaining plots
 os.system("rm -f static/*.png")
@@ -75,6 +76,8 @@ def search():
     if query:
         if search_method == "boolean":
             matches = boolean_search(query=query, scraped_data=scraped_data)
+        elif search_method == "fuzzy":
+            matches = fuzzy_search(query=query, scraped_data=scraped_data)
         else:
             query_vector = tfidf_vectorizer.transform([query])
             matches = get_matches(
