@@ -16,7 +16,7 @@ driver = webdriver.Chrome()
 
 
 def scrape_oikotie(url):
-   max_clicks = 3
+   max_clicks = 10
    scraped_data = []
    try:
        driver.get(url)
@@ -60,7 +60,7 @@ def scrape_oikotie(url):
 def scrape_duunitori(url):
    i = 0
    scraped_data = []
-   while i < 5:
+   while i < 10:
        if i == 0:
            URL = url
        else:
