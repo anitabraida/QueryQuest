@@ -23,20 +23,17 @@
         <ul>
             <!-- Go through each job title and link in the "titles_and_links" variable sent from the Flask app -->
             {% for match in matches %}
-            <li><a class="overflow" href="{{ match.link }}">{{ match.title }}</a></li>
+            <li><a href="{{ match.link }}">{{ match.title }}</a></li>
             {% endfor %}
         </ul>
         {% if query|length > 0 and matches|length == 0 %}
         <p>No matches were found.</p>
         {% endif %}
-
-        {% if query|length > 0 and matches|length > 0 %}
     </div>
     <div style="align:left;font-face:verdana;color:gray;">
-        <p><i>Keyphrase frequecy distribution</i></p>
-        <img style="height: 500px;width: 450px;" src="./static/query_{{ query }}_plot.png">
+        <p><i>Trending jobtitles</i></p>
+        <img style="height: 500px;width: 450px;" src="./static/trending_plot.png">
     </div>
-    {% endif %}
 
     <script>
         document.getElementById("toggleTF-IDFButton").addEventListener("click", function () {
