@@ -30,7 +30,7 @@ def boolean_search(scraped_data, query):
     def rewrite_query(query):  # rewrite every token in the query
         try:
             return " ".join(rewrite_token(t) for t in query.split())
-        except TypeError as e:
+        except KeyError as e:
             print(f"An error occurred: {e}")
             return ""  # or any other default value you prefer
 
