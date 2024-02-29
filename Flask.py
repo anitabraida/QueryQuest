@@ -33,26 +33,6 @@ mlp.use("Agg")
 # create plot that displays trending titles
 
 
-def extract_keyphrases(text):
-    extractor = pke.unsupervised.TopicRank()
-    extractor.load_document(input=text, language="fi")
-    extractor.candidate_selection()
-    extractor.candidate_weighting()
-    keyphrases = extractor.get_n_best(n=5)  # Extract top 5 keyphrases
-    return [keyphrase for keyphrase, score in keyphrases]
-
-
-data_keyphrases = {
-    post["title"]: extract_keyphrases(post["description"]) for post in scraped_data
-}
-
-
-frequencies = defaultdict(nltk.FreqDist)
-for key in data_keyphrases:
-    for keyphrase in data_keyphrases[key]:
-        frequencies[key][keyphrase.lower()] += 1
-
-
 def generate_trending_plot():
     fig, ax = plt.subplots()
     ax.set_title("Trending jobtitles")
@@ -65,13 +45,15 @@ def generate_trending_plot():
 
     popular_job_titles = sorted(
         job_title_frequencies.items(), key=lambda x: x[1], reverse=True
-    )[:10]
+    )[:8]
     popular_titles, frequencies = zip(*popular_job_titles)
     ax.barh(popular_titles, frequencies, color="skyblue")
 
     # Set labels and rotation for better visualization
     ax.set_xlabel("Frequency")
-    ax.set_ylabel("Job Titles")
+    ax.set_yticklabels(popular_titles, fontsize=10)  # Adjust fontsize as needed
+    plt.xticks(fontsize=10)  # Adjust x-axis tick font size as needed
+    plt.yticks(fontsize=10)
     plt.tight_layout()
     plt.savefig("static/trending_plot.png")
 
@@ -79,7 +61,7 @@ def generate_trending_plot():
 @app.route("/")
 def index():
     generate_trending_plot()
-    return render_template("index.html", matches=[])
+    return render_template("index.html", matches=[], show_plot=True)
 
 tfidf_matrix, tfidf_vectorizer = tf_idf_return()
 
@@ -97,8 +79,8 @@ def search():
             query_vector = tfidf_vectorizer.transform([query])
             matches = get_matches(tfidf_matrix=tfidf_matrix, tfidf_vector=query_vector, scraped_data=scraped_data)
 
-        
-        return render_template("index.html", query=query.lower(), matches=matches)
+    return render_template("index.html", query=query.lower(), matches=matches, show_plot=False)
+
 
 
 if __name__ == "__main__":
