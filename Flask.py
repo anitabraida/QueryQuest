@@ -65,13 +65,15 @@ def generate_trending_plot():
 
     popular_job_titles = sorted(
         job_title_frequencies.items(), key=lambda x: x[1], reverse=True
-    )[:10]
+    )[:8]
     popular_titles, frequencies = zip(*popular_job_titles)
     ax.barh(popular_titles, frequencies, color="skyblue")
 
     # Set labels and rotation for better visualization
     ax.set_xlabel("Frequency")
-    ax.set_ylabel("Job Titles")
+    ax.set_yticklabels(popular_titles, fontsize=10)  # Adjust fontsize as needed
+    plt.xticks(fontsize=10)  # Adjust x-axis tick font size as needed
+    plt.yticks(fontsize=10)
     plt.tight_layout()
     plt.savefig("static/trending_plot.png")
 
