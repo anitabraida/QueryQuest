@@ -12,13 +12,15 @@
     <form class="center" action="/search" method="get">
         <input class="form-w form-border" type="text" name="query" autofocus>
         <input type="submit" value="Search">
-        <button type="button" id="toggleButton">Toggle Search Method</button>
-        <input type="hidden" id="searchMethod" name="method" value="tfidf">
+        <button type="button" id="toggleTF-IDFButton">Tf-idf Search</button>
+        <button type="button" id="toggleBooleanButton">Boolean Search</button>
+        <button type="button" id="toggleFuzzyButton">Fuzzy Search</button>
+        <input type="hidden" id="searchMethod" name="method" value="tf-idf">
     </form>
     <ul>
         <!-- Go through each job title and link in the "titles_and_links" variable sent from the Flask app -->
-        {% for title, link in matches %}
-        <li><a class="overflow" href="{{ link }}">{{ title }}</a></li>
+        {% for match in matches %}
+            <li><a class="overflow" href="{{ match.link }}">{{ match.title }}</a></li>
         {% endfor %}
     </ul>
     {% if query|length > 0 and matches|length == 0 %}
@@ -31,17 +33,38 @@
         <img src="./static/query_{{ query }}_plot.png">
     </div>
     {% endif %}
+
     <script>
-        document.getElementById("toggleButton").addEventListener("click", function() {
-            var searchMethodInput = document.getElementById("searchMethod");
-            if (searchMethodInput.value === "tfidf") {
-                searchMethodInput.value = "boolean";
-            } else {
-                searchMethodInput.value = "tfidf";
-            }
-            // Submit the form when the search method is toggled
-            document.getElementById("searchForm").submit();
+        document.getElementById("toggleTF-IDFButton").addEventListener("click", function() {
+            updateSearchMethod("tf-idf");
         });
+
+        document.getElementById("toggleBooleanButton").addEventListener("click", function() {
+            updateSearchMethod("boolean");
+        });
+
+        document.getElementById("toggleFuzzyButton").addEventListener("click", function() {
+            updateSearchMethod("fuzzy");
+        });
+
+        function updateSearchMethod(method) {
+            var searchMethodInput = document.getElementById("searchMethod");
+            if (searchMethodInput.value === method) {
+                // If the current search method is already selected, no need to change
+                return;
+            }
+
+            // Update the search method
+            searchMethodInput.value = method;
+
+            // Update button text
+            var button = method === "boolean" ? document.getElementById("toggleBooleanButton") : document.getElementById("toggleFuzzyButton");
+            var buttonText = method === "boolean" ? "Boolean Search" : "Fuzzy Search";
+            button.innerHTML = buttonText;
+
+            // Submit the form with the new search method
+            document.getElementById("searchForm").submit();
+        }
     </script>
 </body>
 

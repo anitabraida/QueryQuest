@@ -1,12 +1,10 @@
 import json
 from sklearn.feature_extraction.text import CountVectorizer
 
-with open('data.json', 'r', encoding='utf-8') as file:
-        scraped_data = json.load(file)
+#with open('data.json', 'r', encoding='utf-8') as file:
+ #   scraped_data = json.load(file)
 
-query = input("Please enter your query here or hit enter to break: ")
-    if query == "":    
-        break         
+#query = input("Please enter your query here or hit enter to break: ")  
 
 def boolean_search(scraped_data, query):
     d = {"and": "&", "AND": "&",
@@ -53,11 +51,14 @@ def boolean_search(scraped_data, query):
         hits_matrix = eval(rewrite_query(query))
     except Exception as e:
         print(f"Unknown term: {query}")
-        continue    
+    if hits_matrix is None:
+        print("Query did not produce any results.")
+        return []
+
     hits_list = list(hits_matrix.nonzero()[1])
     matches = []
     for i, doc_idx in enumerate(hits_list):
-         match = {
+        match = {
             'title': titles[doc_idx],
             'link': links[doc_idx],
             'description': descriptions[doc_idx]
