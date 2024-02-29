@@ -3,7 +3,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import nltk
 from nltk.stem import PorterStemmer
-from text_mining import scrape_websites
 
 # def rewrite_token(t):
 #    return d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t))
