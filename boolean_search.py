@@ -1,10 +1,10 @@
 import json
 from sklearn.feature_extraction.text import CountVectorizer
 
-# with open('data.json', 'r', encoding='utf-8') as file:
+#with open('data.json', 'r', encoding='utf-8') as file:
 #    scraped_data = json.load(file)
 
-# query = input("Please enter your query here or hit enter to break: ")
+#query = input("Please enter your query here or hit enter to break: ")
 
 
 def boolean_search(scraped_data, query):
@@ -25,7 +25,7 @@ def boolean_search(scraped_data, query):
         elif t in t2i_description:
             return d.get(t, 'td_matrix_description[t2i_description["{:s}"]]'.format(t))
         else:
-            return ""
+            return d.get(t, t) 
 
     def rewrite_query(query):  # rewrite every token in the query
         try:
@@ -72,10 +72,10 @@ def boolean_search(scraped_data, query):
                 "description": descriptions[doc_idx],
             }
             matches.append(match)
-            # print("Matching doc #{:d}: Title: {:s}, Link: {:s}, Description: {:.100s}...".format(i, titles[doc_idx], links[doc_idx], descriptions[doc_idx]))
+            #print("Matching doc #{:d}: Title: {:s}, Link: {:s}, Description: {:.100s}...".format(i, titles[doc_idx], links[doc_idx], descriptions[doc_idx]))
             if i > 5:
                 break
         return matches
 
 
-# boolean_search(scraped_data, query)
+boolean_search(scraped_data, query)
