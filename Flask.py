@@ -7,11 +7,10 @@ from matplotlib import pyplot as plt
 from collections import defaultdict
 import nltk
 import json
+from boolean_search import boolean_search
 
 # clear the static folder of any remaining plots
 os.system("rm -f static/*.png")
-
-# redoing commit
 
 app = Flask(__name__)
 
@@ -31,9 +30,7 @@ with open(file, "r") as f:
 
 mlp.use("Agg")
 
-# use scraped_data, contains 'title' and 'description' and use these in the same way that
-# the example uses the wikipedia data
-# instead do theme extraction using pke and visualize it somehow
+# create plot that displays trending titles
 
 
 def extract_keyphrases(text):
@@ -56,35 +53,32 @@ for key in data_keyphrases:
         frequencies[key][keyphrase.lower()] += 1
 
 
-def generate_query_plot(query, matches_keyphrases):
+def generate_trending_plot():
     fig, ax = plt.subplots()
-    ax.set_title(f"Keyphrase distribution per document \n query: {query}")
+    ax.set_title("Trending jobtitles")
 
-    # Create a dictionary to store the frequencies of keyphrases
-    keyphrase_frequencies = defaultdict(int)
+    # get popular titles
+    job_title_frequencies = {}
+    for title in scraped_data:
+        job_title = title["title"]
+        job_title_frequencies[job_title] = job_title_frequencies.get(job_title, 0) + 1
 
-    # Iterate over each job title and its associated keyphrases
-    for keyphrases in matches_keyphrases.values():
-        for keyphrase in keyphrases:
-            keyphrase_frequencies[keyphrase] += 1
-
-    # Plot the keyphrase distribution
-    ax.barh(
-        list(keyphrase_frequencies.keys()),
-        list(keyphrase_frequencies.values()),
-        color="skyblue",
-    )
+    popular_job_titles = sorted(
+        job_title_frequencies.items(), key=lambda x: x[1], reverse=True
+    )[:10]
+    popular_titles, frequencies = zip(*popular_job_titles)
+    ax.barh(popular_titles, frequencies, color="skyblue")
 
     # Set labels and rotation for better visualization
     ax.set_xlabel("Frequency")
-    ax.set_ylabel("Keyphrases")
-
+    ax.set_ylabel("Job Titles")
     plt.tight_layout()
-    plt.savefig(f"static/query_{query}_plot.png")
+    plt.savefig("static/trending_plot.png")
 
 
 @app.route("/")
 def index():
+    generate_trending_plot()
     return render_template("index.html", matches=[])
 
 tfidf_matrix, tfidf_vectorizer = tf_idf_return()
@@ -92,17 +86,18 @@ tfidf_matrix, tfidf_vectorizer = tf_idf_return()
 @app.route("/search")
 def search():
     query = request.args.get("query")
-    #matches = []
-    matches_keyphrases = {}
+    search_method = request.args.get(
+        "method", "tfi_df"
+    )  # Default to "tfidf" if no method is provided
+    matches = []
     if query:
-        for post in scraped_data:
-            if query.lower() in post["title"].lower():
-               keyphrases = extract_keyphrases(post["description"])
-               matches_keyphrases["title"] = keyphrases
-        #matches = tf_idf(query=query, scraped_data=scraped_data)
-        query_vector = tfidf_vectorizer.transform([query])
-        matches = get_matches(tfidf_matrix=tfidf_matrix, tfidf_vector=query_vector, scraped_data=scraped_data)
-        generate_query_plot(query, matches_keyphrases)
+        if search_method == "boolean":
+            matches = boolean_search(query=query, scraped_data=scraped_data)
+        else:
+            query_vector = tfidf_vectorizer.transform([query])
+            matches = get_matches(tfidf_matrix=tfidf_matrix, tfidf_vector=query_vector, scraped_data=scraped_data)
+
+        
         return render_template("index.html", query=query.lower(), matches=matches)
 
 
