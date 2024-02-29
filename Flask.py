@@ -101,6 +101,7 @@ def search():
                 matches_keyphrases[title] = keyphrases
         if search_method == "boolean":¨
             matches = boolean_search(query=query, scraped_data=scraped_data)
+        else:     
         matches = tf_idf(query=query, scraped_data=scraped_data)
 
         generate_query_plot(query, matches_keyphrases)

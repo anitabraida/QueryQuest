@@ -12,6 +12,8 @@
     <form class="center" action="/search" method="get">
         <input class="form-w form-border" type="text" name="query" autofocus>
         <input type="submit" value="Search">
+        <button type="button" id="toggleButton">Toggle Search Method</button>
+        <input type="hidden" id="searchMethod" name="method" value="tfidf">
     </form>
     <ul>
         <!-- Go through each job title and link in the "titles_and_links" variable sent from the Flask app -->
@@ -29,6 +31,18 @@
         <img src="./static/query_{{ query }}_plot.png">
     </div>
     {% endif %}
+    <script>
+        document.getElementById("toggleButton").addEventListener("click", function() {
+            var searchMethodInput = document.getElementById("searchMethod");
+            if (searchMethodInput.value === "tfidf") {
+                searchMethodInput.value = "boolean";
+            } else {
+                searchMethodInput.value = "tfidf";
+            }
+            // Submit the form when the search method is toggled
+            document.getElementById("searchForm").submit();
+        });
+    </script>
 </body>
 
 </html>
