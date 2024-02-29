@@ -33,7 +33,7 @@ mlp.use("Agg")
 
 
 def generate_trending_plot():
-    fig, ax = plt.subplots(figsize=(12, 8))
+    fig, ax = plt.subplots(figsize=(10, 5))
 
     # get popular titles
     job_title_frequencies = {}
@@ -43,16 +43,16 @@ def generate_trending_plot():
 
     popular_job_titles = sorted(
         job_title_frequencies.items(), key=lambda x: x[1], reverse=True
-    )[:8]
+    )[:5]
     popular_titles, frequencies = zip(*popular_job_titles)
-    ax.barh(popular_titles, frequencies, color="skyblue")
+    ax.barh(popular_titles, frequencies, color="skyblue", height=0.6)
 
     # Set labels and rotation for better visualization
-    ax.set_xlabel("Frequency", fontsize=12)
-    ax.set_yticklabels(popular_titles, fontsize=12)  # Adjust fontsize as needed
+    ax.set_xlabel("Frequency", fontsize=14)
+    ax.set_yticklabels(popular_titles, fontsize=14)  # Adjust fontsize as needed
     ax.xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
-    plt.xticks(fontsize=12)  # Adjust x-axis tick font size as needed
-    plt.yticks(fontsize=12)
+    plt.xticks(fontsize=14)  # Adjust x-axis tick font size as needed
+    plt.yticks(fontsize=14)
     plt.tight_layout(pad=3)
     plt.savefig("static/trending_plot.png")
 
