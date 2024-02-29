@@ -11,39 +11,43 @@
     <h1 class="heading center">Job Search</h1>
     <form class="center" action="/search" method="get">
         <input class="form-w form-border" type="text" name="query" autofocus>
-        <input type="submit" value="Search">
-        <button type="button" id="toggleTF-IDFButton">Tf-idf Search</button>
-        <button type="button" id="toggleBooleanButton">Boolean Search</button>
-        <button type="button" id="toggleFuzzyButton">Fuzzy Search</button>
-        <input type="hidden" id="searchMethod" name="method" value="tf-idf">
+        <div class="center p-05">
+            <button type="submit">Search</button>
+            <button type="button" id="toggleTF-IDFButton">Tf-idf Search</button>
+            <button type="button" id="toggleBooleanButton">Boolean Search</button>
+            <button type="button" id="toggleFuzzyButton">Fuzzy Search</button>
+        </div>
     </form>
-    <ul>
-        <!-- Go through each job title and link in the "titles_and_links" variable sent from the Flask app -->
-        {% for match in matches %}
+    <input type="hidden" id="searchMethod" name="method" value="tf-idf">
+    <div>
+        <ul>
+            <!-- Go through each job title and link in the "titles_and_links" variable sent from the Flask app -->
+            {% for match in matches %}
             <li><a class="overflow" href="{{ match.link }}">{{ match.title }}</a></li>
-        {% endfor %}
-    </ul>
-    {% if query|length > 0 and matches|length == 0 %}
-    <p>No matches were found.</p>
-    {% endif %}
+            {% endfor %}
+        </ul>
+        {% if query|length > 0 and matches|length == 0 %}
+        <p>No matches were found.</p>
+        {% endif %}
 
-    {% if query|length > 0 and matches|length > 0 %}
+        {% if query|length > 0 and matches|length > 0 %}
+    </div>
     <div style="align:left;font-face:verdana;color:gray;">
         <p><i>Keyphrase frequecy distribution</i></p>
-        <img src="./static/query_{{ query }}_plot.png">
+        <img style="height: 500px;width: 450px;" src="./static/query_{{ query }}_plot.png">
     </div>
     {% endif %}
 
     <script>
-        document.getElementById("toggleTF-IDFButton").addEventListener("click", function() {
+        document.getElementById("toggleTF-IDFButton").addEventListener("click", function () {
             updateSearchMethod("tf-idf");
         });
 
-        document.getElementById("toggleBooleanButton").addEventListener("click", function() {
+        document.getElementById("toggleBooleanButton").addEventListener("click", function () {
             updateSearchMethod("boolean");
         });
 
-        document.getElementById("toggleFuzzyButton").addEventListener("click", function() {
+        document.getElementById("toggleFuzzyButton").addEventListener("click", function () {
             updateSearchMethod("fuzzy");
         });
 
