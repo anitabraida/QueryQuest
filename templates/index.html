@@ -24,7 +24,7 @@
         <ul>
             <!-- Go through each job title and link in the "titles_and_links" variable sent from the Flask app -->
             {% for match in matches %}
-                <li>{{ match.0 }} - <a href="{{ match.1 }}">{{ match.0 }}</a></li>
+                <li><a href="{{ match.1 }}">{{ match.0 }}</a></li>
             {% endfor %}
         </ul>
         {% if query|length > 0 and matches|length == 0 %}
