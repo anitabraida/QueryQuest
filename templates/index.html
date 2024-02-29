@@ -9,16 +9,16 @@
 
 <body class="text-style p-8 max-w-2xl mx-auto mt-50">
     <h1 class="heading center">Job Search</h1>
-    <form class="center" action="/search" method="get">
+    <form class="center" action="/search">
         <input class="form-w form-border" type="text" name="query" autofocus>
         <button type="submit" style="border-radius: 25px; border-style: solid;">Search</button>
         <div class="center p-05">
-            <input type="checkbox" id="toggleTF-IDFButton">Tf-idf Search</button>
-            <input type="checkbox" id="toggleBooleanButton">Boolean Search</button>
-            <input type="checkbox" id="toggleFuzzyButton">Fuzzy Search</button>
+            <input type="checkbox" id="toggleTF-IDFButton" name="method" value="tf-idf">Tf-idf Search</button>
+            <input type="checkbox" id="toggleBooleanButton" name="method" value="boolean">Boolean Search</button>
+            <input type="checkbox" id="toggleFuzzyButton" name="method" value="fuzzy">Fuzzy Search</button>
         </div>
     </form>
-    <input type="hidden" id="searchMethod" name="method" value="tf-idf">
+    <!-- <input type="hidden" id="searchMethod" name="method" value="tf-idf"> -->
 
     <div>
         <ul>
@@ -38,7 +38,7 @@
     </div>
     {% endif %}
 
-    <script>
+    <!-- <script>
         document.getElementById("toggleTF-IDFButton").addEventListener("click", function () {
             updateSearchMethod("tf-idf");
         });
@@ -69,7 +69,7 @@
             // Submit the form with the new search method
             document.getElementById("searchForm").submit();
         }
-    </script>
+    </script> -->
 </body>
 
 </html>

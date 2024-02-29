@@ -1,15 +1,12 @@
-from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
-import nltk
-from nltk.stem import PorterStemmer
 import joblib
-#from text_mining import scrape_websites
+# from text_mining import scrape_websites
 
 
 def tf_idf_return():
-    tfidf_vectorizer = joblib.load('tfidf_vectorizer.joblib')
-    tfidf_matrix = joblib.load('tfidf_matrix.joblib')
+    tfidf_vectorizer = joblib.load("tfidf_vectorizer.joblib")
+    tfidf_matrix = joblib.load("tfidf_matrix.joblib")
     return tfidf_matrix, tfidf_vectorizer
 
 
@@ -24,4 +21,3 @@ def get_matches(tfidf_matrix, tfidf_vector, scraped_data):
             break
         matches.append((scraped_data[doc_idx]["title"], scraped_data[doc_idx]["link"]))
     return matches
-
