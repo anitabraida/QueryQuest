@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from tfidf_search import tf_idf
+from tfidf_search import tf_idf_return, get_matches
 import matplotlib as mlp
 import pke
 import os
@@ -87,25 +87,21 @@ def generate_query_plot(query, matches_keyphrases):
 def index():
     return render_template("index.html", matches=[])
 
+tfidf_matrix, tfidf_vectorizer = tf_idf_return()
 
 @app.route("/search")
 def search():
     query = request.args.get("query")
-
-    matches = []
+    #matches = []
     matches_keyphrases = {}
     if query:
         for post in scraped_data:
             if query.lower() in post["title"].lower():
-                title = post["title"]
-                keyphrases = extract_keyphrases(post["description"])
-                matches_keyphrases[title] = keyphrases
-        # Filter job titles based on the query
-        # for data in scraped_data:
-        #    if query.lower() in data['title'].lower():
-        #        matches.append((data['title'], data['link']))
-        matches = tf_idf(query=query, scraped_data=scraped_data)
-
+               keyphrases = extract_keyphrases(post["description"])
+               matches_keyphrases["title"] = keyphrases
+        #matches = tf_idf(query=query, scraped_data=scraped_data)
+        query_vector = tfidf_vectorizer.transform([query])
+        matches = get_matches(tfidf_matrix=tfidf_matrix, tfidf_vector=query_vector, scraped_data=scraped_data)
         generate_query_plot(query, matches_keyphrases)
         return render_template("index.html", query=query.lower(), matches=matches)
 
