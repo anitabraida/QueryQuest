@@ -8,6 +8,7 @@ from collections import defaultdict
 import nltk
 import json
 from boolean_search import boolean_search
+import matplotlib.ticker as ticker
 
 # clear the static folder of any remaining plots
 os.system("rm -f static/*.png")
@@ -34,8 +35,7 @@ mlp.use("Agg")
 
 
 def generate_trending_plot():
-    fig, ax = plt.subplots()
-    ax.set_title("Trending jobtitles")
+    fig, ax = plt.subplots(figsize=(12, 8))
 
     # get popular titles
     job_title_frequencies = {}
@@ -50,11 +50,12 @@ def generate_trending_plot():
     ax.barh(popular_titles, frequencies, color="skyblue")
 
     # Set labels and rotation for better visualization
-    ax.set_xlabel("Frequency")
-    ax.set_yticklabels(popular_titles, fontsize=10)  # Adjust fontsize as needed
-    plt.xticks(fontsize=10)  # Adjust x-axis tick font size as needed
-    plt.yticks(fontsize=10)
-    plt.tight_layout()
+    ax.set_xlabel("Frequency", fontsize=12)
+    ax.set_yticklabels(popular_titles, fontsize=12)  # Adjust fontsize as needed
+    ax.xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
+    plt.xticks(fontsize=12)  # Adjust x-axis tick font size as needed
+    plt.yticks(fontsize=12)
+    plt.tight_layout(pad=3)
     plt.savefig("static/trending_plot.png")
 
 
