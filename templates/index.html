@@ -11,7 +11,7 @@
     <h1 class="heading center">Job Search</h1>
     <form class="center" action="/search" method="get">
         <input class="form-w form-border" type="text" name="query" autofocus>
-        <button type="submit">Search</button>
+        <button type="submit" style="border-radius: 25px; border-style: solid;">Search</button>
         <div class="center p-05">
             <input type="checkbox" id="toggleTF-IDFButton">Tf-idf Search</button>
             <input type="checkbox" id="toggleBooleanButton">Boolean Search</button>
@@ -24,7 +24,7 @@
         <ul>
             <!-- Go through each job title and link in the "titles_and_links" variable sent from the Flask app -->
             {% for match in matches %}
-                <li><a href="{{ match.1 }}">{{ match.0 }}</a></li>
+            <li><a href="{{ match.1 }}">{{ match.0 }}</a></li>
             {% endfor %}
         </ul>
         {% if query|length > 0 and matches|length == 0 %}
@@ -33,8 +33,8 @@
     </div>
     {% if show_plot %}
     <div style="text-align:center;font-face:verdana;color:black;">
-        <p><i>Trending jobtitles</i></p>
-        <img style="height: 500px;width: 500px;" src="./static/trending_plot.png">
+        <p class="text-style" style="margin:0;">Trending job titles</p>
+        <img style="margin-left:-14rem; height: 350px;width: 600px;" src="./static/trending_plot.png">
     </div>
     {% endif %}
 
