@@ -7,6 +7,7 @@ from matplotlib import pyplot as plt
 from collections import defaultdict
 import nltk
 import json
+from boolean_search import boolean_search
 
 # clear the static folder of any remaining plots
 os.system("rm -f static/*.png")
@@ -89,7 +90,7 @@ def index():
 @app.route("/search")
 def search():
     query = request.args.get("query")
-    search_method = request.args.get("method", "tf_idf")  # Default to "tfidf" if no method is provided
+    search_method = request.args.get("method", "tfidf")  # Default to "tfidf" if no method is provided
 
     matches = []
     matches_keyphrases = {}
@@ -99,10 +100,10 @@ def search():
                 title = post["title"]
                 keyphrases = extract_keyphrases(post["description"])
                 matches_keyphrases[title] = keyphrases
-        if search_method == "boolean":¨
+        if search_method == "boolean":
             matches = boolean_search(query=query, scraped_data=scraped_data)
-        else:     
-        matches = tf_idf(query=query, scraped_data=scraped_data)
+        else:
+            matches = tf_idf(query=query, scraped_data=scraped_data)
 
         generate_query_plot(query, matches_keyphrases)
         return render_template("index.html", query=query.lower(), matches=matches)
