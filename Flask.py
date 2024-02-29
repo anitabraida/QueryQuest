@@ -1,11 +1,8 @@
 from flask import Flask, render_template, request
 from tfidf_search import tf_idf_return, get_matches
 import matplotlib as mlp
-import pke
 import os
 from matplotlib import pyplot as plt
-from collections import defaultdict
-import nltk
 import json
 from boolean_search import boolean_search
 import matplotlib.ticker as ticker
@@ -64,7 +61,9 @@ def index():
     generate_trending_plot()
     return render_template("index.html", matches=[], show_plot=True)
 
+
 tfidf_matrix, tfidf_vectorizer = tf_idf_return()
+
 
 @app.route("/search")
 def search():
@@ -78,10 +77,15 @@ def search():
             matches = boolean_search(query=query, scraped_data=scraped_data)
         else:
             query_vector = tfidf_vectorizer.transform([query])
-            matches = get_matches(tfidf_matrix=tfidf_matrix, tfidf_vector=query_vector, scraped_data=scraped_data)
+            matches = get_matches(
+                tfidf_matrix=tfidf_matrix,
+                tfidf_vector=query_vector,
+                scraped_data=scraped_data,
+            )
 
-    return render_template("index.html", query=query.lower(), matches=matches, show_plot=False)
-
+    return render_template(
+        "index.html", query=query.lower(), matches=matches, show_plot=False
+    )
 
 
 if __name__ == "__main__":

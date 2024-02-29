@@ -11,11 +11,11 @@
     <h1 class="heading center">Job Search</h1>
     <form class="center" action="/search" method="get">
         <input class="form-w form-border" type="text" name="query" autofocus>
+        <button type="submit">Search</button>
         <div class="center p-05">
-            <button type="submit">Search</button>
-            <button type="button" id="toggleTF-IDFButton">Tf-idf Search</button>
-            <button type="button" id="toggleBooleanButton">Boolean Search</button>
-            <button type="button" id="toggleFuzzyButton">Fuzzy Search</button>
+            <input type="checkbox" id="toggleTF-IDFButton">Tf-idf Search</button>
+            <input type="checkbox" id="toggleBooleanButton">Boolean Search</button>
+            <input type="checkbox" id="toggleFuzzyButton">Fuzzy Search</button>
         </div>
     </form>
     <input type="hidden" id="searchMethod" name="method" value="tf-idf">
