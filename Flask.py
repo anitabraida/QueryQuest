@@ -89,7 +89,7 @@ def index():
 @app.route("/search")
 def search():
     query = request.args.get("query")
-    search_method = request.args.get("method", "tfidf")  # Default to "tfidf" if no method is provided
+    search_method = request.args.get("method", "tf_idf")  # Default to "tfidf" if no method is provided
 
     matches = []
     matches_keyphrases = {}
