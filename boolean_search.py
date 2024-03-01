@@ -19,6 +19,8 @@ def boolean_search(scraped_data, query):
         ")": ")",
     }  # operator replacements
 
+    query = query.lower()
+
     def rewrite_token(t):
         try:
             return d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t))
@@ -50,26 +52,24 @@ def boolean_search(scraped_data, query):
     td_matrix = dense_matrix.T
 
     t2i = cv.vocabulary_
-
+    #print(t2i)
     
     rewritten_query = rewrite_query(query)
     print("Rewritten Query:", rewritten_query)
     print(type(rewritten_query))
     print(query)
     hits_matrix = eval(rewritten_query)
-
+    print(hits_matrix)
     
-    print(f"Unknown Term: {query}")
+    #print(f"Unknown Term: {query}")
         
     hits_list = list(hits_matrix.nonzero()[1])
+    print(hits_list)
     matches = []
-    for i, doc_idx in enumerate(hits_list):
-        match = {
-            "title": titles[doc_idx],
-            "link": links[doc_idx],
-            "description": descriptions[doc_idx],
-        }
-        matches.append(match)
+    for element in hits_list:
+        matches.append((titles[element], links[element], descriptions[element]))
+        
+    
             #print("Matching doc #{:d}: Title: {:s}, Link: {:s}, Description: {:.100s}...".format(i, titles[doc_idx], links[doc_idx], descriptions[doc_idx]))
        
     return matches
