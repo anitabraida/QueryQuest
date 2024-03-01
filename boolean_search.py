@@ -20,12 +20,13 @@ def boolean_search(scraped_data, query):
     }  # operator replacements
 
     def rewrite_token(t):
-        if t in t2i_title:
-            return d.get(t, 'td_matrix_title[t2i_title["{:s}"]]'.format(t))
-        elif t in t2i_description:
-            return d.get(t, 'td_matrix_description[t2i_description["{:s}"]]'.format(t))
-        else:
-            return d.get(t, t) 
+        try:
+            return d.get(t, 'td_matrix[t2i["{:s}"]]'.format(t))
+        
+        except KeyError as e:
+            print(f"An error occurred: {e}")
+            return ""  # or any other default value you prefer
+
 
     def rewrite_query(query):  # rewrite every token in the query
         try:
@@ -37,45 +38,41 @@ def boolean_search(scraped_data, query):
     titles = [data["title"] for data in scraped_data]
     links = [data["link"] for data in scraped_data]
     descriptions = [data["description"] for data in scraped_data]
+    
+    docs = [f"{data['title']} {data['description']}" for data in scraped_data]
 
-    cv_title = CountVectorizer(lowercase=True, binary=True)
-    cv_description = CountVectorizer(lowercase=True, binary=True)
+    cv = CountVectorizer(lowercase=True, binary=True)
 
-    sparse_matrix_title = cv_title.fit_transform(titles)
-    sparse_matrix_description = cv_description.fit_transform(descriptions)
+    sparse_matrix = cv.fit_transform(docs)
 
-    dense_matrix_title = sparse_matrix_title.todense()
-    dense_matrix_description = sparse_matrix_description.todense()
+    dense_matrix = sparse_matrix.todense()
 
-    td_matrix_description = dense_matrix_description.T
-    td_matrix_title = dense_matrix_title.T
+    td_matrix = dense_matrix.T
 
-    t2i_title = cv_title.vocabulary_
-    t2i_description = cv_description.vocabulary_
+    t2i = cv.vocabulary_
 
-    while True:
-        query = query
-        if query == "":
-            break
+    
+    rewritten_query = rewrite_query(query)
+    print("Rewritten Query:", rewritten_query)
+    print(type(rewritten_query))
+    print(query)
+    hits_matrix = eval(rewritten_query)
 
-        try:
-            hits_matrix = eval(rewrite_query(query))
-        except Exception as e:
-            print(f"Unknown term: {query}")
-            break
-        hits_list = list(hits_matrix.nonzero()[1])
-        matches = []
-        for i, doc_idx in enumerate(hits_list):
-            match = {
-                "title": titles[doc_idx],
-                "link": links[doc_idx],
-                "description": descriptions[doc_idx],
-            }
-            matches.append(match)
+    
+    print(f"Unknown Term: {query}")
+        
+    hits_list = list(hits_matrix.nonzero()[1])
+    matches = []
+    for i, doc_idx in enumerate(hits_list):
+        match = {
+            "title": titles[doc_idx],
+            "link": links[doc_idx],
+            "description": descriptions[doc_idx],
+        }
+        matches.append(match)
             #print("Matching doc #{:d}: Title: {:s}, Link: {:s}, Description: {:.100s}...".format(i, titles[doc_idx], links[doc_idx], descriptions[doc_idx]))
-            if i > 5:
-                break
-        return matches
+       
+    return matches
 
 
-boolean_search(scraped_data, query)
+#boolean_search(scraped_data, query)
