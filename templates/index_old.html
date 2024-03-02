@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Job Search</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles.css')}}">
+</head>
+
+<body class="text-style p-8 max-w-2xl mx-auto mt-50">
+    <h1 class="heading center">Job Search</h1>
+    <form class="center" action="/search">
+        <input class="form-w form-border" type="text" name="query" autofocus>
+        <button type="submit" style="border-radius: 25px; border-style: solid; color: white">Search</button>
+        <div class="center p-05">
+            <input type="checkbox" id="toggleTF-IDFButton" name="method[]" value="tf-idf">Tf-idf Search</button>
+            <input type="checkbox" id="toggleBooleanButton" name="method[]" value="boolean">Boolean Search</button>
+            <input type="checkbox" id="toggleFuzzyButton" name="method[]" value="fuzzy">Fuzzy Search</button>
+        </div>
+    </form>
+    <!-- <input type="hidden" id="searchMethod" name="method" value="tf-idf"> -->
+
+    <div>
+        <ul>
+            <!-- Go through each job title and link in the "titles_and_links" variable sent from the Flask app -->
+            {% for match in matches %}
+            <li><a href="{{ match.1 }}">{{ match.0 }}</a></li>
+            {% endfor %}
+        </ul>
+        {% if query|length > 0 and matches|length == 0 %}
+        <p>No matches were found.</p>
+        {% endif %}
+    </div>
+    {% if show_plot %}
+    <div style="text-align:center;font-face:verdana;color:black;">
+        <p class="text-style" style="margin:0;">Trending job titles</p>
+        <img style="margin-left:-14rem; height: 350px;width: 600px;" src="./static/trending_plot.png">
+    </div>
+    {% endif %}
+
+    <!-- <script>
+        document.getElementById("toggleTF-IDFButton").addEventListener("click", function () {
+            updateSearchMethod("tf-idf");
+        });
+
+        document.getElementById("toggleBooleanButton").addEventListener("click", function () {
+            updateSearchMethod("boolean");
+        });
+
+        document.getElementById("toggleFuzzyButton").addEventListener("click", function () {
+            updateSearchMethod("fuzzy");
+        });
+
+        function updateSearchMethod(method) {
+            var searchMethodInput = document.getElementById("searchMethod");
+            if (searchMethodInput.value === method) {
+                // If the current search method is already selected, no need to change
+                return;
+            }
+
+            // Update the search method
+            searchMethodInput.value = method;
+
+            // Update button text
+            var button = method === "boolean" ? document.getElementById("toggleBooleanButton") : document.getElementById("toggleFuzzyButton");
+            var buttonText = method === "boolean" ? "Boolean Search" : "Fuzzy Search";
+            button.innerHTML = buttonText;
+
+            // Submit the form with the new search method
+            document.getElementById("searchForm").submit();
+        }
+    </script> -->
+</body>
+
+</html>
