@@ -15,6 +15,38 @@ a {
     height: 50%;
 }
 
+.search-container {
+    border-radius: 20px;
+    border-style: solid;
+    border-color: hwb(0 83% 17%);
+    width: 500px;
+    height: 150px;
+    background: white;
+}
+
+.result-container {
+    background: white;
+    border-radius: 20px;
+    opacity: 90%;
+    max-height: 540px;
+    min-height: 540px;
+    min-width: 500px;
+    max-width: 500px;
+    overflow-y: scroll;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    overflow-x: hidden;
+}
+
+.titles {
+    padding-left: 2rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    ;
+    font-size: larger;
+    text-overflow: ellipsis;
+}
+
 .description-container {
     margin-right: -4rem;
     width: 45vw;
@@ -25,6 +57,8 @@ a {
     border-width: 0px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     overflow-y: scroll;
+    background: white;
+    opacity: 85%;
 }
 
 .heading {

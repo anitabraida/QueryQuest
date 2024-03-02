@@ -8,35 +8,44 @@
     <link rel="stylesheet" href="../static/styles.css">
 </head>
 
-<body class="text-style top-left p-8 mx-auto" style="margin-top: -1rem; width: 100%;">
+<body class="text-style top-left p-8 mx-auto"
+    style="margin-top: -1rem; width: 100%; background-image: url('../static/hello-network.jpg'); background-size: 90em;">
     <div style="display: flex; justify-content: space-evenly;">
         <div style="margin-left: -7rem;">
-            <div style="display: flex; justify-content: space-evenly;">
-                <h1 class="heading">Job Search</h1>
-                <a style="font-size: medium; font-weight: 500; color: darkgray; margin-top: 2.3rem;" href="/trending">
-                    What's trending? &#8599;
-                </a>
-            </div>
-            <form action="/search">
-                <input class="form-w form-border" type="text" name="query" autofocus>
-                <button type="submit"
-                    style="border-radius: 5%; border-style: solid; background: #e4e4e4;">Search</button>
-                <div class="p-05">
-                    <input type="checkbox" id="toggleTF-IDFButton" name="method[]" value="tf-idf">Tf-idf Search</button>
-                    <input type="checkbox" id="toggleBooleanButton" name="method[]" value="boolean">Boolean
-                    Search</button>
-                    <input type="checkbox" id="toggleFuzzyButton" name="method[]" value="fuzzy">Fuzzy Search</button>
+            <div class="search-container">
+                <div style="display: flex; justify-content: space-evenly;">
+                    <h1 class="heading">Job Search</h1>
+                    <a style="font-size: medium; font-weight: 500; color: darkgray; margin-top: 2.3rem;"
+                        href="/trending">
+                        What's trending? &#8599;
+                    </a>
                 </div>
-            </form>
-            <ul style="margin-left: -3rem;">
-                <!-- Go through each job title and link in the "titles_and_links" variable sent from the Flask app -->
-                {% for match in matches %}
-                <li><a class="overflow-hidden" href="{{ match.1 }}">{{ match.0 }}</a></li>
-                {% endfor %}
-                {% if query|length > 0 and matches|length == 0 %}
-                <p>No matches were found.</p>
-                {% endif %}
-            </ul>
+                <form style="margin-left: 2rem;" action="/search">
+                    <input class="form-w form-border" type="text" name="query" autofocus>
+                    <button type="submit"
+                        style="border-radius: 5%; border-style: solid; background: #e4e4e4;">Search</button>
+                    <div class="p-05">
+                        <input type="checkbox" id="toggleTF-IDFButton" name="method[]" value="tf-idf">Tf-idf
+                        Search</button>
+                        <input type="checkbox" id="toggleBooleanButton" name="method[]" value="boolean">Boolean
+                        Search</button>
+                        <input type="checkbox" id="toggleFuzzyButton" name="method[]" value="fuzzy">Fuzzy
+                        Search</button>
+                    </div>
+                </form>
+            </div>
+            <div class="result-container">
+                <ul style="margin-left: -3rem;">
+                    <!-- Go through each job title and link in the "titles_and_links" variable sent from the Flask app -->
+                    {% for match in matches %}
+                    <li class="titles"><a class="overflow-hidden" href="{{ match.1 }}">{{ match.0 }}</a>
+                    </li>
+                    {% endfor %}
+                    {% if query|length > 0 and matches|length == 0 %}
+                    <p>No matches were found.</p>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
         <div class="description-container">
             <!--This is where the clicked on job title's full description goes-->
