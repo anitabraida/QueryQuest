@@ -56,10 +56,6 @@ a {
     max-width: 30rem;
 }
 
-.overflow {
-    overflow: hidden;
-}
-
 .mx-auto {
     margin-left: auto;
     margin-right: auto;

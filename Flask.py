@@ -57,13 +57,13 @@ def generate_trending_plot():
     plt.savefig("static/trending_plot.png")
 
 
+tfidf_matrix, tfidf_vectorizer = tf_idf_return()
+
+
 @app.route("/")
 def index():
     generate_trending_plot()
     return render_template("index.html", matches=[], show_plot=True)
-
-
-tfidf_matrix, tfidf_vectorizer = tf_idf_return()
 
 
 @app.route("/search")
@@ -89,6 +89,12 @@ def search():
     return render_template(
         "index.html", query=query.lower(), matches=matches, show_plot=False
     )
+
+
+@app.route("/trending")
+def trending():
+    generate_trending_plot()
+    return render_template("trending.html", matches=[], show_plot=True)
 
 
 if __name__ == "__main__":

@@ -11,7 +11,12 @@
 <body class="text-style top-left p-8 mx-auto" style="margin-top: -1rem; width: 100%;">
     <div style="display: flex; justify-content: space-evenly;">
         <div style="margin-left: -7rem;">
-            <h1 class="heading">Job Search</h1>
+            <div style="display: flex; justify-content: space-evenly;">
+                <h1 class="heading">Job Search</h1>
+                <a style="font-size: medium; font-weight: 500; color: darkgray; margin-top: 2.3rem;" href="/trending">
+                    What's trending? &#8599;
+                </a>
+            </div>
             <form action="/search">
                 <input class="form-w form-border" type="text" name="query" autofocus>
                 <button type="submit"
@@ -26,7 +31,7 @@
             <ul style="margin-left: -3rem;">
                 <!-- Go through each job title and link in the "titles_and_links" variable sent from the Flask app -->
                 {% for match in matches %}
-                <li><a class="overflow" href="{{ match.1 }}">{{ match.0 }}</a></li>
+                <li><a class="overflow-hidden" href="{{ match.1 }}">{{ match.0 }}</a></li>
                 {% endfor %}
                 {% if query|length > 0 and matches|length == 0 %}
                 <p>No matches were found.</p>
@@ -35,6 +40,7 @@
         </div>
         <div class="description-container">
             <!--This is where the clicked on job title's full description goes-->
+
         </div>
     </div>
 </body>
