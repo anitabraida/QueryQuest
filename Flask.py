@@ -63,7 +63,7 @@ tfidf_matrix, tfidf_vectorizer = tf_idf_return()
 @app.route("/")
 def index():
     generate_trending_plot()
-    return render_template("index.html", matches=[], show_plot=True)
+    return render_template("index.html", matches=matches, show_plot=True)
 
 
 @app.route("/search")

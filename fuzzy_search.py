@@ -28,11 +28,11 @@ def fuzzy_search(query, scraped_data):
         total_score = title_score + description_score
 
         if title_score > 70 or description_score > 70:
-            matches.append((job_data["title"], job_data["link"], total_score))
+            matches.append((job_data["title"], job_data["link"], job_data["description"], total_score))
 
     if len(matches) > 0:
         matches = sorted(matches, key=lambda x: x[2], reverse=True)
-        matches = [(title, link) for title, link, _ in matches]
+        matches = [(title, link, description) for title, link, description in matches]
 
     return matches
 
