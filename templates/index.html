@@ -34,9 +34,10 @@
                     </div>
                 </form>
             </div>
-            <div class="result-container">
-                <ul style="margin-left: -3rem;">
+            <div id="titleContainer" class="result-container">
+                <ul style="margin-left: -3rem;" id="job-title-ul">
                     <!-- Go through each job title and link in the "titles_and_links" variable sent from the Flask app -->
+<<<<<<< HEAD
                     {% for match in matches %}
                     <li class="titles"><a class="overflow-hidden" href="{{ match[1] }}"><strong>{{ match[0] }}</strong></a>
                         {% set description_lines = match[2].split('\n') %}
@@ -47,14 +48,50 @@
                     {% if query|length > 0 and matches|length == 0 %}
                     <p>No matches were found.</p>
                     {% endif %}
+=======
+>>>>>>> f22251508b1e7fa53bdae45574645830797995c9
                 </ul>
             </div>
         </div>
-        <div class="description-container">
-            <!--This is where the clicked on job title's full description goes-->
+        <div class="description-container" id="description-container">
 
         </div>
     </div>
+    <script async>
+        (async () => {
+            // find "query" query param to be able to pass it on to search-json endpoint
+            let params = (new URL(document.location)).searchParams;
+            let query = params.get("query");
+
+            // call /search-json and put into array of objs
+            // loop through the array on the frontend to render all matches and handle their expand box
+            const resp = await fetch(`/search-json?${params.toString()}`);
+            const matches = await resp.json();
+
+            let jobTitleList = document.getElementById('job-title-ul');
+
+            // If query exists and no matches
+            if (query.length && !matches.length) {
+                let li = document.createElement('li');
+                li.classList.add("error");
+                li.innerHTML = "No matches were found!";
+                jobTitleList.appendChild(li);
+            }
+
+            matches.forEach(match => {
+                let li = document.createElement('li');
+                li.classList.add("titles");
+                let a = document.createElement('a');
+                a.classList.add("overflow-hidden");
+                a.href = match.link;
+                a.innerHTML = match.title;
+                li.appendChild(a);
+                jobTitleList.appendChild(li);
+
+                // TODO: add event handler for clicking and showing data on the right side of the page
+            });
+        })()
+    </script>
 </body>
 
 </html>

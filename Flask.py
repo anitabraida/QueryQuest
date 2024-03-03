@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from tfidf_search import tf_idf_return, get_matches
 import matplotlib as mlp
 import os
@@ -68,6 +68,20 @@ def index():
 
 @app.route("/search")
 def search():
+    return render_template(
+        "index.html",
+        show_plot=False,
+    )
+
+
+@app.route("/trending")
+def trending():
+    generate_trending_plot()
+    return render_template("trending.html", matches=[], show_plot=True)
+
+
+@app.route("/search-json")
+def search_json():
     query = request.args.get("query")
     search_method = request.args.get(
         "method", "tfi_df"
@@ -85,16 +99,10 @@ def search():
                 tfidf_vector=query_vector,
                 scraped_data=scraped_data,
             )
-
-    return render_template(
-        "index.html", query=query.lower(), matches=matches, show_plot=False
-    )
-
-
-@app.route("/trending")
-def trending():
-    generate_trending_plot()
-    return render_template("trending.html", matches=[], show_plot=True)
+    matches_as_dict_list = [
+        dict(zip(["title", "link", "description"], values)) for values in matches
+    ]
+    return jsonify(matches_as_dict_list)
 
 
 if __name__ == "__main__":
