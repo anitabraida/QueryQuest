@@ -26,5 +26,4 @@ def get_matches(tfidf_matrix, tfidf_vector, scraped_data):
                 scraped_data[doc_idx]["description"],
             )
         )
-        matches.append((scraped_data[doc_idx]["title"], scraped_data[doc_idx]["link"]))
     return matches

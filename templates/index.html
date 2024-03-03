@@ -37,7 +37,6 @@
             <div id="titleContainer" class="result-container">
                 <ul style="margin-left: -3rem;" id="job-title-ul">
                     <!-- Go through each job title and link in the "titles_and_links" variable sent from the Flask app -->
-<<<<<<< HEAD
                     {% for match in matches %}
                     <li class="titles"><a class="overflow-hidden" href="{{ match.1 }}">{{ match.0 }}</a>
                     </li>
@@ -45,8 +44,6 @@
                     {% if query|length > 0 and matches|length == 0 %}
                     <p>No matches were found.</p>
                     {% endif %}
-=======
->>>>>>> f22251508b1e7fa53bdae45574645830797995c9
                 </ul>
             </div>
         </div>
