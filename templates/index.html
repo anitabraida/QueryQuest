@@ -39,10 +39,7 @@
                     <!-- Go through each job title and link in the "titles_and_links" variable sent from the Flask app -->
 <<<<<<< HEAD
                     {% for match in matches %}
-                    <li class="titles"><a class="overflow-hidden" href="{{ match[1] }}"><strong>{{ match[0] }}</strong></a>
-                        {% set description_lines = match[2].split('\n') %}
-                        {% set description_without_first_line = '\n'.join(description_lines[2:]) %}
-                        <p>{{ description_without_first_line[:200] + '...'}}</p>
+                    <li class="titles"><a class="overflow-hidden" href="{{ match.1 }}">{{ match.0 }}</a>
                     </li>
                     {% endfor %}
                     {% if query|length > 0 and matches|length == 0 %}

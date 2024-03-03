@@ -1,6 +1,7 @@
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import joblib
+# from text_mining import scrape_websites
 
 
 def tf_idf_return():
@@ -18,9 +19,6 @@ def get_matches(tfidf_matrix, tfidf_vector, scraped_data):
     for i, doc_idx in enumerate(sorted_indices):
         if cosine_similarities[0][doc_idx] == 0:
             break
-<<<<<<< HEAD
-        matches.append((scraped_data[doc_idx]["title"], scraped_data[doc_idx]["link"], scraped_data[doc_idx]["description"]))
-=======
         matches.append(
             (
                 scraped_data[doc_idx]["title"],
@@ -28,5 +26,5 @@ def get_matches(tfidf_matrix, tfidf_vector, scraped_data):
                 scraped_data[doc_idx]["description"],
             )
         )
->>>>>>> f22251508b1e7fa53bdae45574645830797995c9
+        matches.append((scraped_data[doc_idx]["title"], scraped_data[doc_idx]["link"]))
     return matches
