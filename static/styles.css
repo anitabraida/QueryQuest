@@ -25,6 +25,7 @@ a {
 .result-container {
     background: white;
     /* border-radius: 20px; */
+    padding-left: -1rem;
     opacity: 90%;
     max-height: 520px;
     min-height: 520px;
@@ -33,11 +34,11 @@ a {
     overflow-y: scroll;
     margin-top: 1rem;
     margin-bottom: 2rem;
-    overflow-x: hidden;
+    overflow-x: ellipsis;
 }
 
 .titles {
-    padding-left: 2rem;
+    padding-left: 0.5px;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
     ;
