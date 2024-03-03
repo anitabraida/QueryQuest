@@ -21,15 +21,15 @@
                     </a>
                 </div>
                 <form style="margin-left: 2rem;" action="/search">
-                    <input class="form-w form-border" type="text" name="query" autofocus>
+                    <input class="form-w form-border" type="text" name="query" id="search-query-input">
                     <button type="submit"
                         style="border-radius: 5%; border-style: solid; background: #e4e4e4;">Search</button>
                     <div class="p-05">
-                        <input type="checkbox" id="toggleTF-IDFButton" name="method[]" value="tf-idf">Tf-idf
+                        <input type="checkbox" id="tf-idf" name="method" value="tf-idf">Tf-idf
                         Search</button>
-                        <input type="checkbox" id="toggleBooleanButton" name="method[]" value="boolean">Boolean
+                        <input type="checkbox" id="boolean" name="method" value="boolean">Boolean
                         Search</button>
-                        <input type="checkbox" id="toggleFuzzyButton" name="method[]" value="fuzzy">Fuzzy
+                        <input type="checkbox" id="fuzzy" name="method" value="fuzzy">Fuzzy
                         Search</button>
                     </div>
                 </form>
@@ -50,15 +50,36 @@
             let params = (new URL(document.location)).searchParams;
             let query = params.get("query");
 
-            // call /search-json and put into array of objs
-            // loop through the array on the frontend to render all matches and handle their expand box
-            const resp = await fetch(`/search-json?${params.toString()}`);
-            const matches = await resp.json();
+            let querySearchInput = document.getElementById('search-query-input');
+            if (query && query.length) {
+                // pre-fill the search box with whatever you just searched for
+                querySearchInput.value = query;
+                // pre-fill the checkboxes with whatever you just searched for
+                for (const [key, val] of params) {
+                    let checkbox = document.getElementById(val);
+                    if (checkbox && checkbox.matches('[type="checkbox"]')) {
+                        checkbox.checked = true;
+                    }
+                }
+            }
 
             let jobTitleList = document.getElementById('job-title-ul');
 
-            // If query exists and no matches
-            if (query.length && !matches.length) {
+            // call /search-json and put into array of objs
+            // loop through the array on the frontend to render all matches and handle their expand box
+            const resp = await fetch(`/search-json?${params.toString()}`);
+
+            if (!resp.ok) {
+                let li = document.createElement('li');
+                li.classList.add("error");
+                li.innerHTML = "Something went wrong!";
+                jobTitleList.appendChild(li);
+            }
+
+            const matches = await resp.json();
+
+            // If no matches
+            if (!matches.length) {
                 let li = document.createElement('li');
                 li.classList.add("error");
                 li.innerHTML = "No matches were found!";

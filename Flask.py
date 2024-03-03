@@ -99,9 +99,12 @@ def search_json():
                 tfidf_vector=query_vector,
                 scraped_data=scraped_data,
             )
-    matches_as_dict_list = [
-        dict(zip(["title", "link", "description"], values)) for values in matches
-    ]
+        matches_as_dict_list = [
+            dict(zip(["title", "link", "description"], values)) for values in matches
+        ]
+    else:
+        matches_as_dict_list = scraped_data[-15:]
+
     return jsonify(matches_as_dict_list)
 
 
