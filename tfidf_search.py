@@ -19,5 +19,11 @@ def get_matches(tfidf_matrix, tfidf_vector, scraped_data):
     for i, doc_idx in enumerate(sorted_indices):
         if cosine_similarities[0][doc_idx] == 0:
             break
-        matches.append((scraped_data[doc_idx]["title"], scraped_data[doc_idx]["link"]))
+        matches.append(
+            (
+                scraped_data[doc_idx]["title"],
+                scraped_data[doc_idx]["link"],
+                scraped_data[doc_idx]["description"],
+            )
+        )
     return matches

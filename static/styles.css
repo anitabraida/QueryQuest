@@ -16,9 +16,7 @@ a {
 }
 
 .search-container {
-    border-radius: 20px;
-    border-style: solid;
-    border-color: hwb(0 83% 17%);
+    /* border-radius: 20px; */
     width: 500px;
     height: 150px;
     background: white;
@@ -26,7 +24,7 @@ a {
 
 .result-container {
     background: white;
-    border-radius: 20px;
+    /* border-radius: 20px; */
     opacity: 90%;
     max-height: 540px;
     min-height: 540px;
