@@ -36,19 +36,12 @@
             </div>
             <div id="titleContainer" class="result-container">
                 <ul style="margin-left: -3rem;" id="job-title-ul">
-                    <!-- Go through each job title and link in the "titles_and_links" variable sent from the Flask app -->
-                    {% for match in matches %}
-                    <li class="titles"><a class="overflow-hidden" href="{{ match.1 }}">{{ match.0 }}</a>
-                    </li>
-                    {% endfor %}
-                    {% if query|length > 0 and matches|length == 0 %}
-                    <p>No matches were found.</p>
-                    {% endif %}
+                    <!-- Go through each job title -->
                 </ul>
             </div>
         </div>
         <div class="description-container" id="description-container">
-
+            <!-- Show more details for a clicked job -->
         </div>
     </div>
     <script async>
@@ -82,9 +75,40 @@
                 li.appendChild(a);
                 jobTitleList.appendChild(li);
 
-                // TODO: add event handler for clicking and showing data on the right side of the page
+                a.addEventListener('click', async (event) => {
+                    event.preventDefault(); // Prevent default link behavior
+
+                    renderMatchIntoDescriptionContainer(match);
+                });
             });
+
+            // pre-render first match element onto description container
+
+            renderMatchIntoDescriptionContainer(matches[0]);
         })()
+
+        function renderMatchIntoDescriptionContainer(match) {
+            let descriptionContainer = document.getElementById('description-container');
+            // Clear previous content
+            descriptionContainer.innerHTML = '';
+
+            // Create title element
+            let titleElement = document.createElement('h2');
+            titleElement.textContent = match.title;
+            descriptionContainer.appendChild(titleElement);
+
+            // Create link sub-heading element
+            let actualJobLinkElement = document.createElement('a');
+            actualJobLinkElement.textContent = match.link;
+            actualJobLinkElement.href = match.link;
+            actualJobLinkElement.target = "_blank";
+            descriptionContainer.appendChild(actualJobLinkElement);
+
+            // Create description element
+            let descriptionElement = document.createElement('p');
+            descriptionElement.textContent = match.description;
+            descriptionContainer.appendChild(descriptionElement);
+        }
     </script>
 </body>
 
