@@ -26,8 +26,8 @@ a {
     background: white;
     /* border-radius: 20px; */
     opacity: 90%;
-    max-height: 540px;
-    min-height: 540px;
+    max-height: 520px;
+    min-height: 520px;
     min-width: 500px;
     max-width: 500px;
     overflow-y: scroll;
@@ -48,7 +48,7 @@ a {
 .description-container {
     margin-right: -4rem;
     width: 45vw;
-    height: 100vh;
+    height: 90vh;
     padding: 20px;
     border-radius: 20px;
     border-color: lightgray;
