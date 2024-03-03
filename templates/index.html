@@ -52,7 +52,7 @@
 
             // call /search-json and put into array of objs
             // loop through the array on the frontend to render all matches and handle their expand box
-            const resp = await fetch(`/search-json?query=${query}`); // TODO: encodeURI instead of raw insert like this
+            const resp = await fetch(`/search-json?${params.toString()}`);
             const matches = await resp.json();
 
             let jobTitleList = document.getElementById('job-title-ul');
