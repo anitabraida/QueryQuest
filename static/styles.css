@@ -60,6 +60,7 @@ a {
 
 .link {
     color: darkblue;
+    text-decoration: underline;
 }
 
 .description-container {
