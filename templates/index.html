@@ -21,7 +21,8 @@
                     </a>
                 </div>
                 <form style="margin-left: 2rem;" action="/search">
-                    <input class="form-w form-border" type="text" name="query" id="search-query-input">
+                    <input class="form-w form-border" style="padding-left: 0.5rem;" type="text" name="query"
+                        id="search-query-input">
                     <button type="submit"
                         style="border-radius: 5%; border-style: solid; background: #e4e4e4;">Search</button>
                     <div class="p-05">
@@ -141,6 +142,7 @@
             // Create link sub-heading element
             let actualJobLinkElement = document.createElement('a');
             actualJobLinkElement.textContent = match.link;
+            actualJobLinkElement.classList.add('link')
             actualJobLinkElement.href = match.link;
             actualJobLinkElement.target = "_blank";
             descriptionContainer.appendChild(actualJobLinkElement);

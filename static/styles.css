@@ -20,13 +20,14 @@ a {
     width: 500px;
     height: 150px;
     background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .result-container {
     background: white;
     /* border-radius: 20px; */
     padding-left: -1rem;
-    opacity: 95%;
+    opacity: 85%;
     max-height: 520px;
     min-height: 520px;
     min-width: 500px;
@@ -35,6 +36,7 @@ a {
     margin-top: 1rem;
     margin-bottom: 2rem;
     overflow-x: ellipsis;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .titles {
@@ -50,6 +52,14 @@ a {
 
 .active {
     background-color: #E6E6E6;
+}
+
+.error {
+    margin-left: 1rem;
+}
+
+.link {
+    color: darkblue;
 }
 
 .description-container {
