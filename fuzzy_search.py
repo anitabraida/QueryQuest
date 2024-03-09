@@ -4,7 +4,6 @@ from nltk.stem import PorterStemmer
 import joblib
 import json
 from fuzzywuzzy import fuzz
-#you might have to install the python-Levenshtein model for this to work
 
 
 def fuzzy_search(query, scraped_data):
@@ -15,8 +14,6 @@ def fuzzy_search(query, scraped_data):
         title_score = fuzz.partial_ratio(query, job_data["title"])
         description_score = fuzz.partial_ratio(query, job_data["description"])
         
-        #I added this one since it is another method that identifes better queries in the wrong order, while the 
-        #first one works a bit better for short ones
         second_title_score = fuzz.token_sort_ratio(query, job_data["title"])
         second_description_score = fuzz.token_sort_ratio(query, job_data["description"])
 
@@ -35,5 +32,3 @@ def fuzzy_search(query, scraped_data):
         matches = [(title, link, description) for title, link, description, _ in matches]
 
     return matches
-
-
