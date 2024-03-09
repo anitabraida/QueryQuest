@@ -40,8 +40,10 @@ def boolean_search(scraped_data, query, try_switch):
     descriptions = [data["description"] for data in scraped_data]
     docs = [f"{data['title']} {data['description']}" for data in scraped_data]
 
+    original_query = query
     if "\"" not in query:
         query, docs = stem_docs(query, docs)
+        
     else:
         query = query.replace('"', '')
 
@@ -71,15 +73,15 @@ def boolean_search(scraped_data, query, try_switch):
         matches.append((titles[element], links[element], descriptions[element]))
     statement = ""
     if len(matches) == 0 and try_switch == False:
-        new_query, try_switch = get_closest_word(scraped_data, query, try_switch)
+        new_query, try_switch = get_closest_word(scraped_data, original_query, try_switch)
         if new_query != query:
             matches, statement = boolean_search(scraped_data, new_query, try_switch)
-            statement = "No results for \"{}\", showing results for \"{}\"".format(query, new_query)
+            statement = "No results for \"{}\", showing results for \"{}\"".format(original_query, new_query)
             
     return matches, statement
     
 
-    
+
 def stem_docs(query, documents):
     stemmer = SnowballStemmer("finnish")
     query = query.lower().split()
