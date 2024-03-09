@@ -13,8 +13,6 @@ from selenium.webdriver.support import expected_conditions as EC
 driver = webdriver.Chrome()
 
 
-
-
 def scrape_oikotie(url):
    max_clicks = 10
    scraped_data = []
@@ -33,7 +31,6 @@ def scrape_oikotie(url):
                print(f"Failed to click 'Load More' button: {str(e)}")
                break 
 
-
        soup = BeautifulSoup(driver.page_source, 'html.parser')
        job_ads = soup.find_all('article', class_='job-ad-list-item')
        for job_ad in job_ads:
@@ -49,7 +46,7 @@ def scrape_oikotie(url):
                        description_soup = BeautifulSoup(description_response.content, 'html.parser')
                        paragraphs = description_soup.find_all('p')
                        job_paragraphs = [p.text.strip() for p in paragraphs]
-                       job_description = '\n'.join(job_paragraphs)   
+                       job_description = '\n'.join(job_paragraphs[1:])   
                        scraped_data.append({'title': job_title, 'link': link, 'description': job_description})
    finally:
        driver.quit()
