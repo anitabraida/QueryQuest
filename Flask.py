@@ -90,7 +90,7 @@ def search_json():
     statement = ""
     if query:
         if search_method == "boolean":
-            matches = boolean_search(query=query, scraped_data=scraped_data)
+            matches, statement = boolean_search(query=query, scraped_data=scraped_data, try_switch=False)
         elif search_method == "fuzzy":
             matches = fuzzy_search(query=query, scraped_data=scraped_data)
         else:

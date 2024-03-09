@@ -1,8 +1,8 @@
 import json
 from sklearn.feature_extraction.text import CountVectorizer
+from tfidf_search import get_closest_word
 
-
-def boolean_search(scraped_data, query):
+def boolean_search(scraped_data, query, try_switch):
     d = {
         "and": "&",
         "AND": "&",
@@ -59,5 +59,12 @@ def boolean_search(scraped_data, query):
     matches = []
     for element in hits_list:
         matches.append((titles[element], links[element], descriptions[element]))
-       
-    return matches
+    statement = ""
+    if len(matches) == 0 and try_switch == False:
+        new_query, try_switch = get_closest_word(scraped_data, query, try_switch)
+        if new_query != query:
+            matches, statement = boolean_search(scraped_data, new_query, try_switch)
+            statement = "No results for \"{}\", showing results for \"{}\"".format(query, new_query)
+            
+    return matches, statement
+    
