@@ -8,6 +8,7 @@ from boolean_search import boolean_search
 import matplotlib.ticker as ticker
 from fuzzy_search import fuzzy_search
 import spacy
+import re
 
 # clear the static folder of any remaining plots
 os.system("rm -f static/*.png")
@@ -35,11 +36,13 @@ mlp.use("Agg")
 
 # create plot that displays trending titles with NER
 
+regex_pattern = r".* oy\b"
+
 
 def generate_trending_plot():
     fig, ax = plt.subplots(figsize=(10, 5))
 
-    custom_stop_words = ["Helsinki"]
+    custom_stop_words = ["Helsinki", "Leijona Catering", "korko-", "HUSin"]
 
     # get popular titles using NER
     job_title_frequencies = {}
@@ -53,6 +56,7 @@ def generate_trending_plot():
                     entity.label_ not in ["CARDINAL", "GPE", "LOC"]
                     and not entity.text.isdigit()
                     and entity.text not in custom_stop_words
+                    and not re.match(regex_pattern, entity.text, re.IGNORECASE)
                 ):
                     job_title = entity.text
                     job_title_frequencies[job_title] = (
@@ -64,6 +68,7 @@ def generate_trending_plot():
                     entity.label_ not in ["CARDINAL", "GPE", "LOC"]
                     and not entity.text.isdigit()
                     and entity.text not in custom_stop_words
+                    and not re.match(regex_pattern, entity.text, re.IGNORECASE)
                 ):
                     job_title = entity.text
                     job_title_frequencies[job_title] = (
