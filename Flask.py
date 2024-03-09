@@ -57,7 +57,7 @@ def generate_trending_plot():
     plt.savefig("static/trending_plot.png")
 
 
-tfidf_matrix, tfidf_vectorizer = tf_idf_return()
+
 
 
 @app.route("/")
@@ -86,18 +86,19 @@ def search_json():
     search_method = request.args.get(
         "method", "tfi_df"
     )  # Default to "tfidf" if no method is provided
-    matches = []
+    #matches = []
+    statement = ""
     if query:
         if search_method == "boolean":
             matches = boolean_search(query=query, scraped_data=scraped_data)
         elif search_method == "fuzzy":
             matches = fuzzy_search(query=query, scraped_data=scraped_data)
         else:
-            query_vector = tfidf_vectorizer.transform([query])
-            matches = get_matches(
-                tfidf_matrix=tfidf_matrix,
-                tfidf_vector=query_vector,
+            
+            matches, statement = get_matches(
                 scraped_data=scraped_data,
+                query = query,
+                try_switch = False
             )
         matches_as_dict_list = [
             dict(zip(["title", "link", "description"], values)) for values in matches
@@ -105,7 +106,11 @@ def search_json():
     else:
         matches_as_dict_list = scraped_data[-15:]
 
-    return jsonify(matches_as_dict_list)
+    response_data = {
+        "matches": matches_as_dict_list,
+        "statement": statement
+    }
+    return jsonify(response_data)
 
 
 if __name__ == "__main__":

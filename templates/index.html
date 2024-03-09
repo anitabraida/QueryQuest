@@ -76,7 +76,9 @@
                 hideDescriptionContainer();
             }
 
-            const matches = await resp.json();
+            const responseData = await resp.json();
+            const matches = responseData.matches;
+            const statement = responseData.statement;
 
             // If no matches
             if (query && !matches.length) {
@@ -88,6 +90,12 @@
             }
             else {
                 showDescriptionContainer();
+            }
+            if (statement.trim() !== '') {
+                let statementElement = document.createElement('p');
+                statementElement.classList.add("statement");
+                statementElement.innerHTML = statement;
+                titleContainer.appendChild(statementElement);
             }
 
             matches.forEach((match, index) => {
