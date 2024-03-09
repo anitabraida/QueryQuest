@@ -52,9 +52,14 @@ def boolean_search(scraped_data, query, try_switch):
     
     rewritten_query = rewrite_query(query)
 
-    hits_matrix = eval(rewritten_query)
+    try:
+        hits_matrix = eval(rewritten_query)
+        hits_list = list(hits_matrix.nonzero()[1])
+    except Exception as e:
+        hits_list = []
         
-    hits_list = list(hits_matrix.nonzero()[1])
+        
+    
     print(hits_list)
     matches = []
     for element in hits_list:
