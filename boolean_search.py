@@ -1,6 +1,7 @@
 import json
 from sklearn.feature_extraction.text import CountVectorizer
 from tfidf_search import get_closest_word
+from nltk.stem.snowball import SnowballStemmer
 
 def boolean_search(scraped_data, query, try_switch):
     d = {
@@ -37,8 +38,12 @@ def boolean_search(scraped_data, query, try_switch):
     titles = [data["title"] for data in scraped_data]
     links = [data["link"] for data in scraped_data]
     descriptions = [data["description"] for data in scraped_data]
-    
     docs = [f"{data['title']} {data['description']}" for data in scraped_data]
+
+    if "\"" not in query:
+        query, docs = stem_docs(query, docs)
+    else:
+        query = query.replace('"', '')
 
     cv = CountVectorizer(lowercase=True, binary=True)
 
@@ -60,7 +65,7 @@ def boolean_search(scraped_data, query, try_switch):
         
         
     
-    print(hits_list)
+    #print(hits_list)
     matches = []
     for element in hits_list:
         matches.append((titles[element], links[element], descriptions[element]))
@@ -73,3 +78,24 @@ def boolean_search(scraped_data, query, try_switch):
             
     return matches, statement
     
+
+    
+def stem_docs(query, documents):
+    stemmer = SnowballStemmer("finnish")
+    query = query.lower().split()
+    stemmed_tokens = [stemmer.stem(token) for token in query]
+    
+    query_stemmed = ' '.join(stemmed_tokens)
+
+
+    docs_stemmed = []
+    for sentence in documents:
+        sentence = sentence.lower().split()
+        #print(sentence)
+        stemmed_sentence = [stemmer.stem(word) for word in sentence]
+        stemmed_sentence = ' '.join(stemmed_sentence)
+        docs_stemmed.append(stemmed_sentence)
+
+    print(docs_stemmed[:2])
+    
+    return query_stemmed, docs_stemmed
