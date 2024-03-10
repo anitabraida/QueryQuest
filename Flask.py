@@ -42,7 +42,14 @@ regex_pattern = r".* oy\b"
 def generate_trending_plot():
     fig, ax = plt.subplots(figsize=(10, 5))
 
-    custom_stop_words = ["Helsinki", "Leijona Catering", "korko-", "HUSin"]
+    custom_stop_words = [
+        "Helsinki",
+        "Leijona Catering",
+        "korko-",
+        "HUSin",
+        "lle",
+        "Tähti",
+    ]
 
     # get popular titles using NER
     job_title_frequencies = {}
