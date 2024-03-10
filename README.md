@@ -4,7 +4,7 @@ This is a search engine for job listings. With our Job Search, you can search jo
 
 Matches are based on job titles and descriptions. You can click on the job title to open the description to the right, and click on the link to open the corresponding job listing in its original website. Currently the job search retrieves job listings based in Helsinki from Oikotie and Duunitori.
 
-In addition, our website displays a plot of currectly trending job titles when you click on the "What's trending" button. 
+In addition, our website displays a plot of currectly trending job titles using Named Entity Recognition when you click on the "What's trending" button. 
 
 To start the flask application, run the following commands:
 
@@ -16,6 +16,10 @@ python3 -m venv venv
 ```
 ```bash
 pip install -r requirements.txt
+```
+```bash
+python -m spacy download en_core_web_sm
+python -m spacy download fi_core_news_sm
 ```
 ```bash
 export FLASK_APP=Flask.py      
