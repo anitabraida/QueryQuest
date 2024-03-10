@@ -9,22 +9,23 @@ from nltk.stem.snowball import SnowballStemmer
 # from text_mining import scrape_websites
 
 
-def tf_idf_return():
-    tfidf_vectorizer = joblib.load("tfidf_vectorizer.joblib")
-    tfidf_matrix = joblib.load("tfidf_matrix.joblib")
-    return tfidf_matrix, tfidf_vectorizer
 
 
 def get_matches(scraped_data, query, try_switch):
     docs = [f"{data['title']} {data['description']}" for data in scraped_data]
 
     original_query = query
+    
+  
     if "\"" not in query:
         query, docs = stem_docs(query, docs)
+        
     else:
         query = query.replace('"', '')
-
-    print(query)
+        
+        
+        original_query = query
+    
     
     
     tfidf_vectorizer = TfidfVectorizer(lowercase=True)
@@ -50,7 +51,7 @@ def get_matches(scraped_data, query, try_switch):
     statement = ""
     if len(matches) == 0 and try_switch == False:
         new_query, try_switch = get_closest_word(scraped_data, original_query, try_switch)
-        if new_query != query:
+        if new_query != original_query:
             matches, statement = get_matches(scraped_data, new_query, try_switch)
             statement = "No results for \"{}\", showing results for \"{}\"".format(original_query, new_query)
             
