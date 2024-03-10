@@ -46,6 +46,7 @@ def boolean_search(scraped_data, query, try_switch):
         
     else:
         query = query.replace('"', '')
+        original_query = query
 
     cv = CountVectorizer(lowercase=True, binary=True)
 
@@ -74,7 +75,7 @@ def boolean_search(scraped_data, query, try_switch):
     statement = ""
     if len(matches) == 0 and try_switch == False:
         new_query, try_switch = get_closest_word(scraped_data, original_query, try_switch)
-        if new_query != query:
+        if new_query != original_query:
             matches, statement = boolean_search(scraped_data, new_query, try_switch)
             statement = "No results for \"{}\", showing results for \"{}\"".format(original_query, new_query)
             
@@ -98,6 +99,6 @@ def stem_docs(query, documents):
         stemmed_sentence = ' '.join(stemmed_sentence)
         docs_stemmed.append(stemmed_sentence)
 
-    print(docs_stemmed[:2])
+    
     
     return query_stemmed, docs_stemmed
