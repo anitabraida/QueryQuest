@@ -84,7 +84,7 @@ def generate_trending_plot():
 
     popular_job_titles = sorted(
         job_title_frequencies.items(), key=lambda x: x[1], reverse=True
-    )[:5]
+    )[:10]
     popular_titles, frequencies = zip(*popular_job_titles)
     ax.barh(popular_titles, frequencies, color="skyblue", height=0.6)
 
