@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from tfidf_search import tf_idf_return, get_matches
+from tfidf_search import get_matches
 import matplotlib as mlp
 import os
 from matplotlib import pyplot as plt
