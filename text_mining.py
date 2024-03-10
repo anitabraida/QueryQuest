@@ -24,9 +24,7 @@ def scrape_oikotie(url):
                    EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div/div/main/div/div/div/div/div[3]/div/div/div[2]/div[2]/div[1]/button/span[1]'))
                )
                load_more_button.click()
-               WebDriverWait(driver, 10).until(
-                   EC.invisibility_of_element_located((By.XPATH, '/html/body/div[1]/div/div/main/div/div/div/div/div[3]/div/div/div[2]/div[2]/div[1]/button/span[1]'))
-               )
+               
            except Exception as e:
                print(f"Failed to click 'Load More' button: {str(e)}")
                break 
@@ -57,7 +55,7 @@ def scrape_oikotie(url):
 def scrape_duunitori(url):
    i = 0
    scraped_data = []
-   while i < 10:
+   while i < 20:
        if i == 0:
            URL = url
        else:
